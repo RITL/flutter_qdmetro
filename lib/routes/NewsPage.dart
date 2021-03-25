@@ -48,14 +48,44 @@ class NewsPageBodyState extends State<NewsPageBody> {
   /// 展示文本列表的document
   List<DocumentItem> documents = [];
 
+  /// 用于监听滚动
+  ScrollController _scrollController = ScrollController();
+
   /// 当前的页码
   int currentPage = 1;
+
+  /// 是否正在上拉加载
+  bool isBottomLoading = false;
+
+  /// 是否正在下拉刷新
+  bool isHeaderLoading = false;
+
+  /// 不再存在更多的数据
+  bool isAll = false;
 
   @override
   void initState() {
     super.initState();
     //进行网络请求
     _loadData();
+
+    //创建监听
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (isAll || isBottomLoading) {
+          return;
+        }
+        isBottomLoading = true;
+        _loadDocumentsList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   /// 行数
@@ -148,24 +178,42 @@ class NewsPageBodyState extends State<NewsPageBody> {
   @override
   Widget build(BuildContext context) {
     //banner图片
-    return ListView.builder(
-      itemCount: _rowsCount(),
-      itemBuilder: (BuildContext context, int index) {
-        if (index == 0) {
-          return _getTopSwiper();
+    return RefreshIndicator(
+      onRefresh: () async {
+        //正在下拉刷新中，直接return即可
+        if (isHeaderLoading) {
+          return;
         }
-        if (index == 1) {
-          return _getHeaderView();
-        }
-        return _getDocumentRow(index - 2);
+        setState(() {
+          isHeaderLoading = true;
+          currentPage = 1;
+        });
+        await _loadData();
+        return;
       },
+      child: ListView.builder(
+        itemCount: _rowsCount(),
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return _getTopSwiper();
+          }
+          if (index == 1) {
+            return _getHeaderView();
+          }
+          return _getDocumentRow(index - 2);
+        },
+        controller: _scrollController,
+      ),
     );
   }
 
   //进行网络加载数据
-  _loadData() async {
+  Future<Null> _loadData() async {
     _loadHeaderData();
     _loadDocumentsList();
+    if (isHeaderLoading) {
+      isHeaderLoading = false;
+    }
   }
 
   //请求顶部的数据
@@ -195,10 +243,17 @@ class NewsPageBodyState extends State<NewsPageBody> {
         "ngstatic/document/getDocumentList",
         {"type": "20", "size": "10", "page": currentPage},
       );
+      //如果当前页码为1,数据置空即可
+      if (currentPage == 1) {
+        documents = [];
+      }
+
       var items =
           response.map((element) => DocumentItem.fromMap(element)).toList();
       //设置数据
       setState(() {
+        isAll = items.length < 10;
+        isBottomLoading = false;
         currentPage += 1;
         documents.addAll(items);
       });
