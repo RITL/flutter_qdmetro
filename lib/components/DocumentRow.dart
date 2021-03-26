@@ -70,11 +70,14 @@ class _DocumentRowState extends State<DocumentRow> {
             )
           ],
         ),
-        Divider(
-          height: 0.1,
-          color: Color.fromRGBO(76, 77, 76, widget.item.hasDivider ? 1 : 0),
-          indent: 2,
-          endIndent: 2,
+        SizedBox(
+          height: 0.5,
+          child: Divider(
+            color:
+                Color.fromRGBO(237, 240, 238, widget.item.hasDivider ? 1 : 0),
+            indent: 2,
+            endIndent: 2,
+          ),
         ),
       ],
     );

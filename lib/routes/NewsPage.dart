@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_qdmetro/common/Global.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import '../common/HttpUtil.dart';
@@ -170,7 +171,7 @@ class NewsPageBodyState extends State<NewsPageBody> {
           key: Key(item.id),
           item: DocumentRowItem(
               title: item.title,
-              subtitle: item.time,
+              subtitle: Global.transDateToString(int.parse(item.time)),
               imgUrl: item.image,
               hasDivider: index != documents.length - 1),
         ),
