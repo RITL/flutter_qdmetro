@@ -6,6 +6,7 @@ import '../models/RouterItem.dart';
 import '../models/ListsHeaderContainer.dart';
 import '../models/DocumentItem.dart';
 import '../components/DocumentRow.dart';
+import 'QDWebView.dart';
 
 /// 新闻界面
 class NewsPage extends StatelessWidget {
@@ -157,21 +158,27 @@ class NewsPageBodyState extends State<NewsPageBody> {
   _getDocumentRow(int index) {
     //获得item
     var item = documents[index];
-    print("index = ${index}, total = ${documents.length}");
-    return Container(
-      padding: EdgeInsets.fromLTRB(13, 0, 13, 0),
-      height: 90,
-      decoration: BoxDecoration(
-        color: Colors.white,
+    // print("index = ${index}, total = ${documents.length}");
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(13, 0, 13, 0),
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: DocumentRow(
+          key: Key(item.id),
+          item: DocumentRowItem(
+              title: item.title,
+              subtitle: item.time,
+              imgUrl: item.image,
+              hasDivider: index != documents.length - 1),
+        ),
       ),
-      child: DocumentRow(
-        key: Key(item.id),
-        item: DocumentRowItem(
-            title: item.title,
-            subtitle: item.time,
-            imgUrl: item.image,
-            hasDivider: index != documents.length - 1),
-      ),
+      onTap: () {
+        Navigator.pushNamed(context, "/web",
+            arguments: QDWebViewConfig(url: item.webUrl));
+      },
     );
   }
 

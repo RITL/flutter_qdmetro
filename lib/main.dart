@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'routes/NewsPage.dart';
-import 'common/Global.dart';
+import 'routes/QDWebView.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     /// 配置路由
     Map<String, WidgetBuilder> routes = {
-      '/newsIndex': (BuildContext context) => NewsPage()
+      '/newsIndex': (BuildContext context) => NewsPage(),
+      '/web': (BuildContext context) => QDWebView(),
     };
 
     ///主题
@@ -25,10 +26,10 @@ class MyApp extends StatelessWidget {
         shadowColor: Colors.yellow);
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '青岛地铁 Flutter',
       routes: routes,
       theme: themeData,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: '青岛地铁 Flutter'),
     );
   }
 }
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title), elevation: 0),
       body: Center(
-        child: Text("111"),
+        child: Text("我是青岛地铁Flutter"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
