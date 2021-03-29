@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class RouterItem {
-  RouterItem({
+class QDRouterItem {
+  QDRouterItem({
     this.boxKey,
     this.gif,
     this.id,
@@ -21,12 +21,12 @@ class RouterItem {
   String title;
   String type;
 
-  factory RouterItem.fromJson(String str) =>
-      RouterItem.fromMap(json.decode(str));
+  factory QDRouterItem.fromJson(String str) =>
+      QDRouterItem.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory RouterItem.fromMap(Map<String, dynamic> json) => RouterItem(
+  factory QDRouterItem.fromMap(Map<String, dynamic> json) => QDRouterItem(
         boxKey: json["boxKey"],
         gif: json["gif"],
         id: json["id"],

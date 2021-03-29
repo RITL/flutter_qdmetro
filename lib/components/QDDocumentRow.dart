@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../common/Global.dart';
 
-class DocumentRowItem {
-  DocumentRowItem({this.title, this.subtitle, this.imgUrl, this.hasDivider});
+class QDDocumentRowItem {
+  QDDocumentRowItem({this.title, this.subtitle, this.imgUrl, this.hasDivider});
 
   String title = "";
   String subtitle = "";
@@ -10,16 +10,16 @@ class DocumentRowItem {
   bool hasDivider = false;
 }
 
-class DocumentRow extends StatefulWidget {
+class QDDocumentRow extends StatefulWidget {
   /// 创建传值
-  DocumentRow({Key key, this.item}) : super(key: key);
+  QDDocumentRow({Key key, this.item}) : super(key: key);
 
-  DocumentRowItem item;
+  QDDocumentRowItem item;
   @override
-  State<StatefulWidget> createState() => _DocumentRowState();
+  State<StatefulWidget> createState() => _QDDocumentRowState();
 }
 
-class _DocumentRowState extends State<DocumentRow> {
+class _QDDocumentRowState extends State<QDDocumentRow> {
   @override
   Widget build(BuildContext context) {
     return Column(

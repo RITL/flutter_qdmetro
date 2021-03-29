@@ -1,54 +1,61 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
+import '../components/QDDocumentRow.dart';
 import '../common/HttpUtil.dart';
-import '../models/RouterItem.dart';
-import '../models/ListsHeaderContainer.dart';
-import '../models/DocumentItem.dart';
-import '../components/DocumentRow.dart';
-import 'QDWebView.dart';
+import '../models/QDRouterItem.dart';
+import '../models/QDListHeaderContainer.dart';
+import '../models/QDDocumentItem.dart';
+import 'QDWebViewPage.dart';
 
 /// 新闻界面
-class NewsPage extends StatelessWidget {
+class QDNewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //导航栏
-      appBar: AppBar(
-        title: Text("资讯"),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_outlined,
-            color: Color.fromRGBO(76, 77, 76, 1),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        elevation: 2,
-        shadowColor: Colors.black12,
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('资讯'),
       ),
-      //实现功能的载体
-      body: NewsPageBody(),
+      child: QDNewsPageBody(),
     );
+
+    // Scaffold(
+    //   //导航栏
+    //   appBar: AppBar(
+    //     title: Text("资讯"),
+    //     leading: IconButton(
+    //       icon: Icon(
+    //         Icons.arrow_back_ios_outlined,
+    //         color: Color.fromRGBO(76, 77, 76, 1),
+    //       ),
+    //       onPressed: () {
+    //         Navigator.pop(context);
+    //       },
+    //     ),
+    //     elevation: 2,
+    //     shadowColor: Colors.black12,
+    //   ),
+    //   //实现功能的载体
+    //   body: QDNewsPageBody(),
+    // );
   }
 }
 
-class NewsPageBody extends StatefulWidget {
+class QDNewsPageBody extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => NewsPageBodyState();
+  State<StatefulWidget> createState() => QDNewsPageBodyState();
 }
 
-class NewsPageBodyState extends State<NewsPageBody> {
+class QDNewsPageBodyState extends State<QDNewsPageBody> {
   /// 网络请求
   var httpUtil = HttpUtil();
 
   /// 存放顶部banner的items
-  List<RouterItem> topImages = [];
+  List<QDRouterItem> topImages = [];
 
   /// 展示文本列表的document
-  List<DocumentItem> documents = [];
+  List<QDDocumentItem> documents = [];
 
   /// 用于监听滚动
   ScrollController _scrollController = ScrollController();
@@ -111,7 +118,7 @@ class NewsPageBodyState extends State<NewsPageBody> {
       margin: EdgeInsets.only(top: 10),
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: CupertinoColors.white,
       ),
       child: Swiper(
           loop: isLoop,
@@ -150,7 +157,7 @@ class NewsPageBodyState extends State<NewsPageBody> {
             fontWeight: FontWeight.bold,
           )),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: CupertinoColors.white,
       ),
     );
   }
@@ -165,11 +172,11 @@ class NewsPageBodyState extends State<NewsPageBody> {
         padding: EdgeInsets.fromLTRB(13, 0, 13, 0),
         height: 90,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: CupertinoColors.white,
         ),
-        child: DocumentRow(
+        child: QDDocumentRow(
           key: Key(item.id),
-          item: DocumentRowItem(
+          item: QDDocumentRowItem(
               title: item.title,
               subtitle: Global.transDateToString(int.parse(item.time)),
               imgUrl: item.image,
@@ -185,34 +192,73 @@ class NewsPageBodyState extends State<NewsPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    //banner图片
-    return RefreshIndicator(
-      onRefresh: () async {
-        //正在下拉刷新中，直接return即可
-        if (isHeaderLoading) {
-          return;
-        }
-        setState(() {
-          isHeaderLoading = true;
-          currentPage = 1;
-        });
-        await _loadData();
-        return;
-      },
-      child: ListView.builder(
-        itemCount: _rowsCount(),
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return _getTopSwiper();
-          }
-          if (index == 1) {
-            return _getHeaderView();
-          }
-          return _getDocumentRow(index - 2);
-        },
+    // 采用iOS风格的列表
+    return SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          CupertinoSliverRefreshControl(
+            refreshIndicatorExtent: 50.0,
+            onRefresh: () async {
+              //正在下拉刷新中，直接return即可
+              if (isHeaderLoading) {
+                return Future.value(true);
+              }
+              setState(() {
+                isHeaderLoading = true;
+                currentPage = 1;
+              });
+              await _loadData();
+              return Future.value(true);
+            },
+          ),
+          //列表
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                if (index == 0) {
+                  return _getTopSwiper();
+                }
+                if (index == 1) {
+                  return _getHeaderView();
+                }
+                return _getDocumentRow(index - 2);
+              },
+              childCount: _rowsCount(),
+            ),
+          ),
+        ],
         controller: _scrollController,
       ),
     );
+
+    // Android风格
+    // RefreshIndicator(
+    //   onRefresh: () async {
+    //     //正在下拉刷新中，直接return即可
+    //     if (isHeaderLoading) {
+    //       return;
+    //     }
+    //     setState(() {
+    //       isHeaderLoading = true;
+    //       currentPage = 1;
+    //     });
+    //     await _loadData();
+    //     return;
+    //   },
+    //   child: ListView.builder(
+    //     itemCount: _rowsCount(),
+    //     itemBuilder: (BuildContext context, int index) {
+    //       if (index == 0) {
+    //         return _getTopSwiper();
+    //       }
+    //       if (index == 1) {
+    //         return _getHeaderView();
+    //       }
+    //       return _getDocumentRow(index - 2);
+    //     },
+    //     controller: _scrollController,
+    //   ),
+    // );
   }
 
   //进行网络加载数据
@@ -233,7 +279,7 @@ class NewsPageBodyState extends State<NewsPageBody> {
         {"moduleId": "20"},
       );
       //转model
-      var container = ListsHeaderContainer.fromMap(response);
+      var container = QDListHeaderContainer.fromMap(response);
 
       //设置banner
       setState(() {
@@ -257,7 +303,7 @@ class NewsPageBodyState extends State<NewsPageBody> {
       }
 
       var items =
-          response.map((element) => DocumentItem.fromMap(element)).toList();
+          response.map((element) => QDDocumentItem.fromMap(element)).toList();
       //设置数据
       setState(() {
         isAll = items.length < 10;

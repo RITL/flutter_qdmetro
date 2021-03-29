@@ -6,8 +6,8 @@ import 'dart:convert';
 // import 'package:intl/intl.dart';
 // import 'int';
 
-class DocumentItem {
-  DocumentItem({
+class QDDocumentItem {
+  QDDocumentItem({
     this.author,
     this.favoriteNum,
     this.favorited,
@@ -37,12 +37,12 @@ class DocumentItem {
   String title;
   String webUrl;
 
-  factory DocumentItem.fromJson(String str) =>
-      DocumentItem.fromMap(json.decode(str));
+  factory QDDocumentItem.fromJson(String str) =>
+      QDDocumentItem.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory DocumentItem.fromMap(Map<String, dynamic> json) => DocumentItem(
+  factory QDDocumentItem.fromMap(Map<String, dynamic> json) => QDDocumentItem(
         author: json["author"],
         favoriteNum: json["favoriteNum"],
         favorited: json["favorited"],
