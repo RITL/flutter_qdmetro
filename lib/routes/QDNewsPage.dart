@@ -213,19 +213,21 @@ class QDNewsPageBodyState extends State<QDNewsPageBody> {
           ),
           //列表
           SliverList(
+            delegate:
+                SliverChildBuilderDelegate((BuildContext context, int index) {
+              return index == 0 ? _getTopSwiper() : _getHeaderView();
+            }, childCount: 2),
+          ),
+
+          /// 资讯iao
+          SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                if (index == 0) {
-                  return _getTopSwiper();
-                }
-                if (index == 1) {
-                  return _getHeaderView();
-                }
-                return _getDocumentRow(index - 2);
+                return _getDocumentRow(index);
               },
-              childCount: _rowsCount(),
+              childCount: documents.length,
             ),
-          ),
+          )
         ],
         controller: _scrollController,
       ),
