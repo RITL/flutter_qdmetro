@@ -125,8 +125,8 @@ class QDNewsPageBodyState extends State<QDNewsPageBody> {
           itemHeight: height - 16,
           itemWidth: width - 40,
           itemCount: topImages.length,
-          viewportFraction: 0.95,
-          scale: 1,
+          viewportFraction: 0.9,
+          scale: 0.96,
           itemBuilder: (BuildContext context, int index) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -220,7 +220,8 @@ class QDNewsPageBodyState extends State<QDNewsPageBody> {
           ),
 
           /// 资讯iao
-          SliverList(
+          SliverFixedExtentList(
+            itemExtent: 90,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return _getDocumentRow(index);
