@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 /// 子界面
-import "QDMainPage.dart";
+import 'QDMainPage.dart';
 import "QDNewsPage.dart";
 
 /// tabBarController

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     //     shadowColor: Colors.yellow);
 
     var themeData = CupertinoThemeData(
-      primaryColor: Global.BlackColor,
+      primaryColor: Global.blackColor,
       brightness: Brightness.light,
     );
 

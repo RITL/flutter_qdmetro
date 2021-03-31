@@ -14,7 +14,7 @@ class QDDocumentRow extends StatefulWidget {
   /// 创建传值
   QDDocumentRow({Key key, this.item}) : super(key: key);
 
-  QDDocumentRowItem item;
+  final QDDocumentRowItem item;
   @override
   State<StatefulWidget> createState() => _QDDocumentRowState();
 }
@@ -40,7 +40,7 @@ class _QDDocumentRowState extends State<QDDocumentRow> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Global.BlackColor,
+                          color: Global.blackColor,
                           fontSize: 15,
                         ),
                       ),
