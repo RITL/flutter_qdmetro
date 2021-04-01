@@ -97,10 +97,10 @@ class QDNewsPageBodyState extends State<QDNewsPageBody> {
     super.dispose();
   }
 
-  /// 行数
-  _rowsCount() {
-    return 2 + documents.length;
-  }
+  // /// 行数
+  // _rowsCount() {
+  //   return 2 + documents.length;
+  // }
 
   /// 顶部的轮播图
   _getTopSwiper() {
