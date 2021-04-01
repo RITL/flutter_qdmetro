@@ -48,7 +48,7 @@ class _QDMainPageState extends State<QDMainPage> {
       //导航栏
       navigationBar: _navigationBar(),
       child: SafeArea(
-        // top: false,
+        top: false,
         child: Container(
           decoration: BoxDecoration(
             color: Global.mainPageBackgroundColor,
@@ -63,11 +63,16 @@ class _QDMainPageState extends State<QDMainPage> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    //顶部的轮播
+                    //顶部的轮播以及icon
                     if (index == 0) {
                       // return _topSwiper();
                       return _topSwiperAndIconContainer();
                     }
+                    //热门活动
+                    if (index == 1) {
+                      return _activityContainer();
+                    }
+
                     //icon导航栏
                     return Container(
                       margin: EdgeInsets.only(top: 20),
@@ -77,7 +82,7 @@ class _QDMainPageState extends State<QDMainPage> {
                       ),
                     );
                   },
-                  childCount: 2,
+                  childCount: 3,
                 ),
               ),
             ],
@@ -133,9 +138,10 @@ class _QDMainPageState extends State<QDMainPage> {
 
   //获得swiper的高度
   _getSwiperConstHeight() {
+    var safeTop = MediaQuery.of(context).padding.top;
     var width = MediaQuery.of(context).size.width;
     var height = width * 170.0 / 375;
-    return height;
+    return height + safeTop;
   }
 
   _getIconContainerHeight() {
@@ -260,6 +266,76 @@ class _QDMainPageState extends State<QDMainPage> {
           ),
         ),
       ],
+    );
+  }
+
+  //MARK:
+  _activityContainer() {
+    var items = _listDataContainer?.activity ?? [];
+    if (items.isEmpty) {
+      return Container();
+    }
+    return Container(
+      // height: 250,
+      padding: EdgeInsets.only(top: 15, left: 15, right: 15),
+      child: Column(
+        children: [
+          //头部标题
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "热门活动",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    "查看更多",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Global.grayColor,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  Text(
+                    ">",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Global.grayColor,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemRed,
+            ),
+            child: GridView.count(
+              padding: EdgeInsets.zero,
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              childAspectRatio: 110.0 / 150,
+              children: items
+                  .map((e) => Container(
+                        child: CachedNetworkImage(
+                          imageUrl: e.imgUrl,
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

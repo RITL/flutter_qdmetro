@@ -8,6 +8,9 @@ class Global {
   /// 项目中默认的黑色
   static var blackColor = Color.fromRGBO(89, 88, 89, 1);
 
+  /// 项目中的灰色
+  static var grayColor = Color.fromRGBO(153, 153, 153, 1);
+
   /// 主页的背景色
   static var mainPageBackgroundColor = Color.fromRGBO(247, 247, 247, 1);
 
