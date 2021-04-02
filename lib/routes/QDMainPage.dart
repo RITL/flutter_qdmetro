@@ -6,7 +6,9 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_qdmetro/common/HttpUtil.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
 import 'package:geolocator/geolocator.dart';
+import 'QDWebViewPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../components/QDDocumentRow.dart';
 import '../models/QDHomePageContainer.dart';
 
 class QDMainPage extends StatefulWidget {
@@ -72,6 +74,22 @@ class _QDMainPageState extends State<QDMainPage> {
                     if (index == 1) {
                       return _activityContainer();
                     }
+                    //附近站点
+                    if (index == 2) {
+                      return Text("我是附近站点");
+                    }
+                    //中间的广告
+                    if (index == 3) {
+                      return _middleAdContainer();
+                    }
+                    //资讯模块
+                    if (index == 4) {
+                      return _bottomDocumentContainer();
+                    }
+                    //知道么
+                    if (index == 5) {
+                      return _bottomKnowledgeContainer();
+                    }
 
                     //icon导航栏
                     return Container(
@@ -82,7 +100,7 @@ class _QDMainPageState extends State<QDMainPage> {
                       ),
                     );
                   },
-                  childCount: 3,
+                  childCount: 6,
                 ),
               ),
             ],
@@ -292,25 +310,13 @@ class _QDMainPageState extends State<QDMainPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Row(
-                children: [
-                  Text(
-                    "查看更多",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Global.grayColor,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  Text(
-                    ">",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Global.grayColor,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ],
+              Text(
+                "查看更多>",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Global.grayColor,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ],
           ),
@@ -337,6 +343,276 @@ class _QDMainPageState extends State<QDMainPage> {
         ],
       ),
     );
+  }
+
+  /// 中间广告页的高度
+  _middleAdContainerHeight() {
+    var width = MediaQuery.of(context).size.width - 40;
+    var height = width * 60.0 / 335;
+    return height;
+  }
+
+  //中间的广告位置
+  _middleAdContainer() {
+    var items = _listDataContainer?.advertisement ?? [];
+    if (items.isEmpty) {
+      return Container();
+    }
+    return Container(
+      height: _middleAdContainerHeight(),
+      child: Swiper(
+        loop: items.isNotEmpty,
+        itemCount: items.length,
+        itemBuilder: (context, index) => Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: CachedNetworkImage(
+                imageUrl: items[index].imgUrl,
+                fit: BoxFit.cover,
+              ),
+            )),
+      ),
+    );
+  }
+
+  //获得列表信息
+  _getDocumentRow(int index) {
+    //获得item
+    var items = _listDataContainer?.documents ?? [];
+    if (index >= items.length) {
+      return Container();
+    }
+    var item = _listDataContainer.documents[index];
+    // print("index = ${index}, total = ${documents.length}");
+    return GestureDetector(
+      child: Container(
+        height: 90,
+        child: QDDocumentRow(
+          key: Key(item.id),
+          item: QDDocumentRowItem(
+              title: item.title,
+              subtitle: Global.transDateToString(int.parse(item.time)),
+              imgUrl: item.image,
+              hasDivider: index != items.length - 1),
+        ),
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, "/web",
+            arguments: QDWebViewConfig(url: item.webUrl));
+      },
+    );
+  }
+
+  ///底部的资讯文章
+  _bottomDocumentContainer() {
+    var items = _listDataContainer?.documents ?? [];
+    if (items.isEmpty) {
+      return Container();
+    }
+    return Container(
+      padding: EdgeInsets.only(top: 15, left: 15, right: 15),
+      child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "地铁资讯",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "查看更多>",
+              style: TextStyle(
+                fontSize: 12,
+                color: Global.grayColor,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+        ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.only(top: 10),
+          shrinkWrap: true,
+          itemExtent: 90,
+          itemCount: items.length,
+          itemBuilder: (context, index) => _getDocumentRow(index),
+        )
+      ]),
+    );
+  }
+
+  /// doyouknow 知识的row
+  _bottomKnowledgeRow(int index) {
+    var item = _listDataContainer.doYouKnow.list[index];
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      item.title,
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Text(
+                      item.subtitle,
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 10,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      item.number,
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(item.unit,
+                        style: TextStyle(
+                          color: Global.blackColor,
+                          fontSize: 12,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            child: Divider(
+              height: 0.5,
+              color: Color.fromRGBO(253, 238, 220, 1),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  /// 底部bottomKnowledgeContainer中list的高度
+  _bottomKnowledgeListHeight() {
+    var items = _listDataContainer?.doYouKnow?.list ?? [];
+    if (items.isEmpty) {
+      return 0;
+    }
+    return 33.0 * items.length + 22.0 + 10.0;
+  }
+
+  /// 底部的DoUknown
+  _bottomKnowledgeContainer() {
+    var items = _listDataContainer?.doYouKnow?.list ?? [];
+    if (items.isEmpty) {
+      Container();
+    }
+    return Padding(
+      padding: EdgeInsets.only(left: 13, right: 13, top: 15),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+        child: Container(
+          height: _bottomKnowledgeListHeight(),
+          margin: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(color: CupertinoColors.white),
+          child: Stack(
+            children: [
+              //左上角的图片
+              Positioned(
+                child: Image.asset("images/main_bottom_left_top_bg.png"),
+              ),
+              //右下角的图片
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Image.asset("images/main_bottom_right_bottom_bg.png"),
+              ),
+
+              /// 中间的圆角框
+              Positioned(
+                right: 4,
+                top: 5,
+                left: 4,
+                bottom: 5,
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        width: .5,
+                        color: Color.fromRGBO(253, 238, 220, 1),
+                      )),
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(top: 22),
+                    itemExtent: 33,
+                    itemCount: items.length,
+                    itemBuilder: (context, index) => _bottomKnowledgeRow(index),
+                  ),
+                ),
+              ),
+              //中间的文字
+              Positioned(
+                child: Container(
+                  height: 22,
+                  child: Center(
+                    child: Container(
+                      height: 22,
+                      padding: EdgeInsets.symmetric(horizontal: 35),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("images/main_bottom_title_bg.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Text(
+                          "您知道吗",
+                          style: TextStyle(
+                            color: Color.fromRGBO(252, 139, 0, 1),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // Container(
+    //   height: 150,
+    //   margin: EdgeInsets.only(left: 13, right: 13, top: 15),
+    //   decoration: BoxDecoration(
+    //     color: CupertinoColors.white,
+    //   ),
+    //   child: ClipRRect(
+    //     borderRadius: BorderRadius.all(
+    //       Radius.circular(8),
+    //     ),
+    //   ),
+    // );
   }
 
   //MARK: 逻辑

@@ -68,7 +68,10 @@ flutter:
 
     # 主页
     - images/main_tab_scan.png
-
+    #主页底部do u know
+    - images/main_bottom_left_top_bg.png
+    - images/main_bottom_right_bottom_bg.png
+    - images/main_bottom_title_bg.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
