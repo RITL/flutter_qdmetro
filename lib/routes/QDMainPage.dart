@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_qdmetro/common/HttpUtil.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
@@ -29,18 +30,48 @@ class _QDMainPageState extends State<QDMainPage> {
   QDHomePageContainer _listDataContainer;
 
   /// 列表控制器
-  ScrollController scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    //创建scrollView
+    _scrollController.addListener(() {
+      //如果导航栏的滚动
+      var navigationBarHeight = MediaQuery.of(context).padding.top + 64.0;
+      //应该展示模拟的导航栏
+      if (_scrollController.offset > navigationBarHeight) {
+        //不存在导航栏
+        if (_hasNavigationBar) {
+          return;
+        }
+        //存在导航栏，启用黑色状态栏
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        setState(() {
+          _hasNavigationBar = true;
+        });
+      } else {
+        //应该消失模拟的导航栏
+        //如果已经消失了，不再做操作
+        if (!_hasNavigationBar) {
+          return;
+        }
+        //存在状态栏，启用白色状态栏
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+        setState(() {
+          _hasNavigationBar = false;
+        });
+      }
+
+      // print("${_scrollController.position}");
+    });
     //开始获取定位并开始请求
     _requestAllData();
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -48,65 +79,69 @@ class _QDMainPageState extends State<QDMainPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       //导航栏
-      navigationBar: _navigationBar(),
+      // navigationBar: _navigationBar(),
       child: SafeArea(
-        top: false,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Global.mainPageBackgroundColor,
-          ),
-          child: CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              /// 刷新组件
-              CupertinoSliverRefreshControl(),
+          top: false,
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Global.mainPageBackgroundColor,
+                ),
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    /// 刷新组件
+                    CupertinoSliverRefreshControl(),
 
-              /// List
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    //顶部的轮播以及icon
-                    if (index == 0) {
-                      // return _topSwiper();
-                      return _topSwiperAndIconContainer();
-                    }
-                    //热门活动
-                    if (index == 1) {
-                      return _activityContainer();
-                    }
-                    //附近站点
-                    if (index == 2) {
-                      return Text("我是附近站点");
-                    }
-                    //中间的广告
-                    if (index == 3) {
-                      return _middleAdContainer();
-                    }
-                    //资讯模块
-                    if (index == 4) {
-                      return _bottomDocumentContainer();
-                    }
-                    //知道么
-                    if (index == 5) {
-                      return _bottomKnowledgeContainer();
-                    }
+                    /// List
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          //顶部的轮播以及icon
+                          if (index == 0) {
+                            // return _topSwiper();
+                            return _topSwiperAndIconContainer();
+                          }
+                          //热门活动
+                          if (index == 1) {
+                            return _activityContainer();
+                          }
+                          //附近站点
+                          if (index == 2) {
+                            return Text("我是附近站点");
+                          }
+                          //中间的广告
+                          if (index == 3) {
+                            return _middleAdContainer();
+                          }
+                          //资讯模块
+                          if (index == 4) {
+                            return _bottomDocumentContainer();
+                          }
+                          //知道么
+                          if (index == 5) {
+                            return _bottomKnowledgeContainer();
+                          }
 
-                    //icon导航栏
-                    return Container(
-                      margin: EdgeInsets.only(top: 20),
-                      height: 800,
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.activeBlue,
+                          //icon导航栏
+                          return Container(
+                            margin: EdgeInsets.only(top: 20),
+                            height: 800,
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.activeBlue,
+                            ),
+                          );
+                        },
+                        childCount: 6,
                       ),
-                    );
-                  },
-                  childCount: 6,
+                    ),
+                  ],
                 ),
               ),
+              _navigationBar(),
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 
@@ -114,9 +149,64 @@ class _QDMainPageState extends State<QDMainPage> {
 
   /// 顶部的navigationBar
   _navigationBar() {
-    if (!_hasNavigationBar) {
-      return null;
-    }
+    // if (!_hasNavigationBar) {
+    //   return Container();
+    // }
+    return Positioned(
+      left: 0,
+      top: 0,
+      right: 0,
+      child: Container(
+        height: MediaQuery.of(context).padding.top + 44.0,
+        decoration: BoxDecoration(
+          color: _hasNavigationBar
+              ? CupertinoColors.white
+              : Color.fromRGBO(0, 0, 0, 0),
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).padding.top,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _hasNavigationBar
+                        ? Text(
+                            "畅达幸福",
+                            style: TextStyle(
+                              color: Global.blackColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        : Container(),
+                    Container(
+                      padding: EdgeInsets.only(
+                        right: 10,
+                        top: 7,
+                        bottom: 2,
+                      ),
+                      child: GestureDetector(
+                          onTap: () => print("扫一扫"),
+                          child: Image(
+                            image: _hasNavigationBar
+                                ? AssetImage("images/main_tab_scan.png")
+                                : AssetImage("images/main_tab_scan_normal.png"),
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
     return CupertinoNavigationBar(
       backgroundColor: _navigationBarBackgroundColor,
       border: Border(
@@ -510,7 +600,7 @@ class _QDMainPageState extends State<QDMainPage> {
   _bottomKnowledgeListHeight() {
     var items = _listDataContainer?.doYouKnow?.list ?? [];
     if (items.isEmpty) {
-      return 0;
+      return 0.0;
     }
     return 33.0 * items.length + 22.0 + 10.0;
   }

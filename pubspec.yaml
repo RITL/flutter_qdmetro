@@ -68,6 +68,7 @@ flutter:
 
     # 主页
     - images/main_tab_scan.png
+    - images/main_tab_scan_normal.png
     #主页底部do u know
     - images/main_bottom_left_top_bg.png
     - images/main_bottom_right_bottom_bg.png
