@@ -1,7 +1,20 @@
 import 'dart:ui';
 import 'package:date_format/date_format.dart';
+import 'package:flutter/cupertino.dart';
 
 class Global {
+  /// 白色
+  static var whiteColor = CupertinoColors.white;
+
+  /// 用于展示的橘色
+  static var orangeColor = Color.fromRGBO(252, 139, 0, 1);
+
+  /// 浅橘色
+  static var ligjtOrangeColor = Color.fromRGBO(253, 244, 234, 1);
+
+  /// 边距的颜色
+  static var borderGrayColor = Color.fromRGBO(204, 204, 204, 1);
+
   /// 导航栏出返回按钮的默认颜色
   static var backArrowDefaultColor = Color.fromRGBO(76, 77, 76, 1);
 

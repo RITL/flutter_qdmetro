@@ -21,7 +21,7 @@ class QDMainPage extends StatefulWidget {
 
 class _QDMainPageState extends State<QDMainPage> {
   /// 导航栏背景的颜色
-  Color _navigationBarBackgroundColor = Colors.white;
+  Color _navigationBarBackgroundColor = Global.whiteColor;
 
   /// 是否存在导航栏
   bool _hasNavigationBar = false;
@@ -109,7 +109,7 @@ class _QDMainPageState extends State<QDMainPage> {
                           }
                           //附近站点
                           if (index == 2) {
-                            return Text("我是附近站点");
+                            return _nearStationContainer();
                           }
                           //中间的广告
                           if (index == 3) {
@@ -207,41 +207,41 @@ class _QDMainPageState extends State<QDMainPage> {
       ),
     );
 
-    return CupertinoNavigationBar(
-      backgroundColor: _navigationBarBackgroundColor,
-      border: Border(
-        bottom: BorderSide(
-          color: Color.fromRGBO(0, 0, 0, 0),
-          width: 0.1, // One physical pixel.
-          style: BorderStyle.solid,
-        ),
-      ),
-      leading: Container(
-        padding: EdgeInsets.only(
-          left: 10,
-          top: 10,
-          // bottom: 10,
-        ),
-        child: Text(
-          "畅达幸福",
-          style: TextStyle(
-            color: Global.blackColor,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      trailing: Container(
-        padding: EdgeInsets.only(
-          right: 10,
-          top: 7,
-          bottom: 2,
-        ),
-        child: Image(
-          image: AssetImage("images/main_tab_scan.png"),
-        ),
-      ),
-    );
+    // return CupertinoNavigationBar(
+    //   backgroundColor: _navigationBarBackgroundColor,
+    //   border: Border(
+    //     bottom: BorderSide(
+    //       color: Color.fromRGBO(0, 0, 0, 0),
+    //       width: 0.1, // One physical pixel.
+    //       style: BorderStyle.solid,
+    //     ),
+    //   ),
+    //   leading: Container(
+    //     padding: EdgeInsets.only(
+    //       left: 10,
+    //       top: 10,
+    //       // bottom: 10,
+    //     ),
+    //     child: Text(
+    //       "畅达幸福",
+    //       style: TextStyle(
+    //         color: Global.blackColor,
+    //         fontSize: 18,
+    //         fontWeight: FontWeight.w500,
+    //       ),
+    //     ),
+    //   ),
+    //   trailing: Container(
+    //     padding: EdgeInsets.only(
+    //       right: 10,
+    //       top: 7,
+    //       bottom: 2,
+    //     ),
+    //     child: Image(
+    //       image: AssetImage("images/main_tab_scan.png"),
+    //     ),
+    //   ),
+    // );
   }
 
   //获得swiper的高度
@@ -432,6 +432,282 @@ class _QDMainPageState extends State<QDMainPage> {
           ),
         ],
       ),
+    );
+  }
+
+  /// 附近站点容器
+  _nearStationContainer() {
+    var stationInfo = _listDataContainer?.nearByStation;
+    if (stationInfo == null) {
+      return Container();
+    }
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _nearStationHeader(),
+          _nearStationMessageWidget(stationInfo),
+        ],
+      ),
+    );
+  }
+
+  /// 附近站点的头部
+  _nearStationHeader() {
+    var stationInfo = _listDataContainer?.nearByStation;
+    if (stationInfo == null) {
+      return Container();
+    }
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "附近站点",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    stationInfo.stationName,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Global.blackColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              "距离约${stationInfo.distance}" +
+                  "${stationInfo.walkTime == 0 ? '' : ',步行约${stationInfo.walkTime}分钟'}",
+              style: TextStyle(
+                fontSize: 12,
+                color: Global.blackColor,
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// 附近站点消息的widget
+  _nearStationMessageWidget(QDNearByStation info) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      // height: 400,
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Global.whiteColor,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 42,
+                decoration: BoxDecoration(color: CupertinoColors.systemRed),
+                child: Row(
+                  children: [],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                      child:
+                          _nearStationMessageItem(info.lineData.first, true)),
+                  Expanded(
+                      child:
+                          _nearStationMessageItem(info.lineData.last, false)),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 3),
+                          decoration: BoxDecoration(
+                            color: Global.ligjtOrangeColor,
+                          ),
+                          child: Text(
+                            "到站时间仅为计划时间，请以实际到站时间为准.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Global.orangeColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 附近站点进出站信息的item
+  /// 带有样式:
+  /// 往：
+  /// 本次列车:
+  /// -----
+  /// 首末时间
+  _nearStationMessageItem(QDLineData lineData, bool isLeft) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      // height: 200,
+      // width: 50,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            height: 75,
+            width: 1,
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBlue,
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "往",
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Text(
+                      isLeft ? lineData.startStation : lineData.endStation,
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "本次列车",
+                      style: TextStyle(
+                        color: Global.blackColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Image(
+                          width: 10,
+                          height: 10,
+                          image: AssetImage("images/metro_time_icon.png"),
+                        ),
+                        Text(
+                          isLeft
+                              ? lineData.startTimeArray.first
+                              : lineData.endTimeArray.last,
+                          style: TextStyle(
+                            color: Global.orangeColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  child: Divider(),
+                ),
+
+                /// 下方的时间表
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _nearStationMessageTimeItem(
+                        "首", isLeft ? lineData.startFirst : lineData.endFirst),
+                    _nearStationMessageTimeItem(
+                        "末", isLeft ? lineData.startLast : lineData.endLast),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 附近站点信息底部的（首末时间）样式
+  _nearStationMessageTimeItem(String title, String time) {
+    return Row(
+      // crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          width: 18,
+          height: 18,
+          padding: EdgeInsets.only(bottom: 2),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 0.5,
+              color: Global.borderGrayColor,
+            ),
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Center(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Global.blackColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+        ),
+        Text(
+          time,
+          style: TextStyle(
+            color: Global.blackColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ],
     );
   }
 
@@ -690,22 +966,9 @@ class _QDMainPageState extends State<QDMainPage> {
         ),
       ),
     );
-
-    // Container(
-    //   height: 150,
-    //   margin: EdgeInsets.only(left: 13, right: 13, top: 15),
-    //   decoration: BoxDecoration(
-    //     color: CupertinoColors.white,
-    //   ),
-    //   child: ClipRRect(
-    //     borderRadius: BorderRadius.all(
-    //       Radius.circular(8),
-    //     ),
-    //   ),
-    // );
   }
 
-  //MARK: 逻辑
+  //MARK: 网络请求以及定位的逻辑
 
   _requestAllData() async {
     //获得定位

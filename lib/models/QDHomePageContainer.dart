@@ -242,7 +242,7 @@ class QDNearByStation {
   bool disable;
   String distance;
   String isTransfer;
-  List<LineDatum> lineData;
+  List<QDLineData> lineData;
   String lineName;
   String lineNum;
   int stationId;
@@ -260,8 +260,8 @@ class QDNearByStation {
         disable: json["disable"],
         distance: json["distance"],
         isTransfer: json["isTransfer"],
-        lineData: List<LineDatum>.from(
-            json["lineData"].map((x) => LineDatum.fromMap(x))),
+        lineData: List<QDLineData>.from(
+            json["lineData"].map((x) => QDLineData.fromMap(x))),
         lineName: json["lineName"],
         lineNum: json["lineNum"],
         stationId: json["stationId"],
@@ -286,8 +286,8 @@ class QDNearByStation {
       };
 }
 
-class LineDatum {
-  LineDatum({
+class QDLineData {
+  QDLineData({
     this.endFirst,
     this.endLast,
     this.endStation,
@@ -319,11 +319,12 @@ class LineDatum {
   List<String> startTimeArray;
   String thisStation;
 
-  factory LineDatum.fromJson(String str) => LineDatum.fromMap(json.decode(str));
+  factory QDLineData.fromJson(String str) =>
+      QDLineData.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory LineDatum.fromMap(Map<String, dynamic> json) => LineDatum(
+  factory QDLineData.fromMap(Map<String, dynamic> json) => QDLineData(
         endFirst: json["endFirst"],
         endLast: json["endLast"],
         endStation: json["endStation"],
