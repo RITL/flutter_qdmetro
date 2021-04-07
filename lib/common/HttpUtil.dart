@@ -67,7 +67,8 @@ class HttpDefaultInterceptor extends Interceptor {
   @override
   Future onResponse(Response response) async {
     //获得data
-    var data = json.decode(response.data);
+    var data =
+        (response.data is Map) ? response.data : json.decode(response.data);
     if (data == null) {
       return super.onError(DioError(error: HttpIOException(-4, "JSON 格式不正确")));
     }

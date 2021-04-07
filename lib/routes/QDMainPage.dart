@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,18 +20,25 @@ class QDMainPage extends StatefulWidget {
   _QDMainPageState createState() => _QDMainPageState();
 }
 
-class _QDMainPageState extends State<QDMainPage> {
-  /// 导航栏背景的颜色
-  Color _navigationBarBackgroundColor = Global.whiteColor;
-
+class _QDMainPageState extends State<QDMainPage> with TickerProviderStateMixin {
   /// 是否存在导航栏
   bool _hasNavigationBar = false;
 
   /// 列表的数据源
   QDHomePageContainer _listDataContainer;
 
+  /// 记录当前的线路
+  int _currentLine = 0;
+  int _currentLineIndex = 0;
+  double _currentLineOriginX = -7.0;
+  double _beforeLineOriginX = -7.0;
+
   /// 列表控制器
   ScrollController _scrollController = ScrollController();
+
+  //动画控制器
+  AnimationController _animationController;
+  Animation<double> _animation;
 
   @override
   void initState() {
@@ -62,9 +70,15 @@ class _QDMainPageState extends State<QDMainPage> {
           _hasNavigationBar = false;
         });
       }
-
-      // print("${_scrollController.position}");
     });
+
+    //动画管理
+    _animationController =
+        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+
+    //执行动画
+    _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
+        .animate(_animationController);
     //开始获取定位并开始请求
     _requestAllData();
   }
@@ -72,6 +86,7 @@ class _QDMainPageState extends State<QDMainPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -206,42 +221,6 @@ class _QDMainPageState extends State<QDMainPage> {
         ),
       ),
     );
-
-    // return CupertinoNavigationBar(
-    //   backgroundColor: _navigationBarBackgroundColor,
-    //   border: Border(
-    //     bottom: BorderSide(
-    //       color: Color.fromRGBO(0, 0, 0, 0),
-    //       width: 0.1, // One physical pixel.
-    //       style: BorderStyle.solid,
-    //     ),
-    //   ),
-    //   leading: Container(
-    //     padding: EdgeInsets.only(
-    //       left: 10,
-    //       top: 10,
-    //       // bottom: 10,
-    //     ),
-    //     child: Text(
-    //       "畅达幸福",
-    //       style: TextStyle(
-    //         color: Global.blackColor,
-    //         fontSize: 18,
-    //         fontWeight: FontWeight.w500,
-    //       ),
-    //     ),
-    //   ),
-    //   trailing: Container(
-    //     padding: EdgeInsets.only(
-    //       right: 10,
-    //       top: 7,
-    //       bottom: 2,
-    //     ),
-    //     child: Image(
-    //       image: AssetImage("images/main_tab_scan.png"),
-    //     ),
-    //   ),
-    // );
   }
 
   //获得swiper的高度
@@ -516,22 +495,16 @@ class _QDMainPageState extends State<QDMainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 42,
-                decoration: BoxDecoration(color: CupertinoColors.systemRed),
-                child: Row(
-                  children: [],
-                ),
-              ),
+              _nearStationSegment(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                      child:
-                          _nearStationMessageItem(info.lineData.first, true)),
+                      child: _nearStationMessageItem(
+                          info.lineData[_currentLineIndex], true)),
                   Expanded(
-                      child:
-                          _nearStationMessageItem(info.lineData.last, false)),
+                      child: _nearStationMessageItem(
+                          info.lineData[_currentLineIndex], false)),
                 ],
               ),
               Row(
@@ -567,6 +540,187 @@ class _QDMainPageState extends State<QDMainPage> {
     );
   }
 
+  /// 每个item的真实长度
+  _nearStationSegmentItemWidth() {
+    var items = _listDataContainer?.nearByStation?.lineData ?? [];
+    return (MediaQuery.of(context).size.width - 30) / max(1, items.length);
+  }
+
+  /// 每个item背后滑块的真实长度
+  _nearStationSegmentItemSwitchWidth() {
+    return _nearStationSegmentItemWidth() + 14;
+  }
+
+  /// 更新附近站点的相关唯一数据
+  _updateCurrentIndexFrameOnNearStation() {
+    setState(() {
+      _beforeLineOriginX = _currentLineOriginX;
+      _currentLineOriginX =
+          _nearStationSegmentItemWidth() * (_currentLineIndex + 0.5) -
+              _nearStationSegmentItemSwitchWidth() / 2.0;
+    });
+  }
+
+  /// 更新动画属性
+  _updateAnimation() {
+    setState(() {
+      _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
+          .animate(_animationController);
+    });
+  }
+
+  /// 附近站点顶部的线路选择器
+  _nearStationSegment() {
+    //获得线路信息
+    var items = _listDataContainer?.nearByStation?.lineData ?? [];
+    var isOnly = items.length < 2;
+    return Container(
+        // height: 42,
+        //如果只有一个，则需要渐变色
+        decoration: isOnly
+            ? BoxDecoration(
+                gradient: LinearGradient(
+                  colors: Global.metroLineUnselectedGradientColors(),
+                ),
+              )
+            : BoxDecoration(
+                color: Global.mainPageBackgroundColor,
+              ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left:
+                  _currentLineOriginX, //_animation?.value ??-7, //使用中心点计算 /*_currentLineIndex * width - 7,*/
+              // child:
+              // SlideTransition(
+              // position: _animation,
+              child: Container(
+                height: isOnly ? 0 : 42,
+                width: _nearStationSegmentItemSwitchWidth(),
+                decoration: isOnly
+                    ? BoxDecoration()
+                    : BoxDecoration(
+                        image: DecorationImage(
+                          // fit: BoxFit.fill,
+                          // centerSlice: Rect.fromLTRB(40, 0, 40, 0),
+                          centerSlice: Rect.fromLTWH(10, 0, 20, 10),
+                          image: AssetImage(
+                              "images/metro_select_segment_background.png"),
+                        ),
+                      ),
+              ),
+            ),
+            // ),
+            Container(
+              height: 42,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: items
+                    .map((e) => _nearStationSegmentItem(e, isOnly))
+                    .toList(),
+              ),
+            )
+          ],
+        ));
+  }
+
+  /// segment的选项item
+  Widget _nearStationSegmentItem(QDLineData data, bool isOnlyOne) {
+    //是否选中
+    var isSelected = _currentLine == data.line;
+    //获得索引
+    var index = _listDataContainer?.nearByStation?.lineData?.indexOf(data) ?? 0;
+
+    /// 必存在的选项
+    List<Widget> children = [
+      Container(
+        width: 56,
+        height: 26,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: _currentLine == data.line
+                ? "${data.line}".metroLineGradientColors()
+                : [Global.borderGrayColor, Global.borderGrayColor],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${data.lineName}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Global.whiteColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13),
+            )
+          ],
+        ),
+      ),
+    ];
+
+    //如果不是唯一一个，需要追加角标三角
+    if (!isOnlyOne && isSelected) {
+      children.add(
+        Positioned(
+            bottom: -1,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  height: 4,
+                  width: 16,
+                  image: AssetImage("images/main_station_arrow_up.png"),
+                ),
+              ],
+            )),
+      );
+    }
+
+    // 返回segmentItem容器
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.only(left: 10),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Stack(
+                  children: children,
+                ),
+              )
+            ],
+          ),
+          onTap: () {
+            //阻止重复或者无效点击
+            if (isOnlyOne || _currentLine == data.line) {
+              return;
+            }
+            //获得
+            setState(
+              () {
+                _currentLine = data.line;
+                _currentLineIndex = index;
+                //这是动画的值
+                _updateCurrentIndexFrameOnNearStation();
+                //启动动画
+                _updateAnimation();
+                _animationController.forward();
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   /// 附近站点进出站信息的item
   /// 带有样式:
   /// 往：
@@ -579,7 +733,6 @@ class _QDMainPageState extends State<QDMainPage> {
       // height: 200,
       // width: 50,
       child: Row(
-        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
@@ -587,7 +740,7 @@ class _QDMainPageState extends State<QDMainPage> {
             height: 75,
             width: 1,
             decoration: BoxDecoration(
-              color: CupertinoColors.systemBlue,
+              color: "${lineData.line}".metroLineColor(),
             ),
           ),
           Expanded(
@@ -614,9 +767,7 @@ class _QDMainPageState extends State<QDMainPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -983,6 +1134,8 @@ class _QDMainPageState extends State<QDMainPage> {
     //设置值即可
     setState(() {
       _listDataContainer = container;
+      _currentLine = container.nearByStation?.lineData?.first?.line ?? 0;
+      _currentLineIndex = 0;
     });
   }
 
@@ -1013,11 +1166,14 @@ class _QDMainPageState extends State<QDMainPage> {
   Future<QDHomePageContainer> _requestListContainer(
       {double longitude: 120.409693, double latitude: 36.131241}) async {
     //进行网络请求
-    Map response = await HttpUtil().post('/ngstatic/static/thirdlyIndex', {
-      "moduleId": "1",
-      "x": "${latitude.toString()}",
-      "y": "${longitude.toString()}"
-    });
+    Map response = await HttpUtil().post(
+        // 'https://www.fastmock.site/mock/3dbf639cdfdcfc128e6edd40c9042fd5/qdmetro/static/index',
+        '/ngstatic/static/thirdlyIndex',
+        {
+          "moduleId": "1",
+          "x": "${latitude.toString()}",
+          "y": "${longitude.toString()}"
+        });
 
     return Future.value(QDHomePageContainer.fromMap(response));
   }

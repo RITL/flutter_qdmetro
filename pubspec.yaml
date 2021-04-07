@@ -71,6 +71,8 @@ flutter:
     - images/main_tab_scan_normal.png
     # 主页附近站点
     - images/metro_time_icon.png
+    - images/main_station_arrow_up.png
+    - images/metro_select_segment_background.png
     # 主页底部do u know
     - images/main_bottom_left_top_bg.png
     - images/main_bottom_right_bottom_bg.png
