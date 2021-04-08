@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import '../routes/QDNewsView.dart';
 import '../routes/QDWebView.dart';
 
-// enum QDRouterPlatform {
-//   case newsIndex,
-//   case web(),
-// }
+enum QDRouterPlatform {
+  newsIndex,
+  //  web(),
+}
 
 class QDRouters {
   /// 全局配置的路由

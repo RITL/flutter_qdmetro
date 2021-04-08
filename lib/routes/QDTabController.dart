@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../common/Global.dart';
 
 /// 子界面
 import 'QDMainView.dart';
@@ -21,17 +22,17 @@ class _QDTabControllerState extends State<QDTabController> {
           activeColor: Color.fromRGBO(100, 181, 116, 1),
           inactiveColor: Color.fromRGBO(109, 109, 109, 1),
           items: [
-            {"title": "主页", "icon_url": "images/tab_home"},
-            {"title": "出行", "icon_url": "images/tab_station"},
-            {"title": "资讯", "icon_url": "images/tab_home"},
-            {"title": "我的", "icon_url": "images/tab_mine"}
+            {"title": "主页", "icon_url": "tab_home"},
+            {"title": "出行", "icon_url": "tab_station"},
+            {"title": "资讯", "icon_url": "tab_home"},
+            {"title": "我的", "icon_url": "tab_mine"}
           ]
               .map((e) => BottomNavigationBarItem(
                     icon: Image(
-                      image: AssetImage(e["icon_url"] + ".png"),
+                      image: e["icon_url"]?.qdImage(),
                     ),
                     activeIcon: Image(
-                      image: AssetImage("${e["icon_url"]}_selected.png"),
+                      image: "${e["icon_url"]}_selected".qdImage(),
                     ),
                     label: e["title"],
                   ))

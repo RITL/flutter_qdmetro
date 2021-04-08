@@ -608,8 +608,7 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
                           // fit: BoxFit.fill,
                           // centerSlice: Rect.fromLTRB(40, 0, 40, 0),
                           centerSlice: Rect.fromLTWH(10, 0, 20, 10),
-                          image: AssetImage(
-                              "images/metro_select_segment_background.png"),
+                          image: "metro_select_segment_background".qdImage(),
                         ),
                       ),
               ),
@@ -677,7 +676,7 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
                 Image(
                   height: 4,
                   width: 16,
-                  image: AssetImage("images/main_station_arrow_up.png"),
+                  image: "main_station_arrow_up".qdImage(),
                 ),
               ],
             )),
@@ -786,7 +785,7 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
                         Image(
                           width: 10,
                           height: 10,
-                          image: AssetImage("images/metro_time_icon.png"),
+                          image: "metro_time_icon".qdImage(),
                         ),
                         Text(
                           isLeft
@@ -1054,13 +1053,13 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
             children: [
               //左上角的图片
               Positioned(
-                child: Image.asset("images/main_bottom_left_top_bg.png"),
+                child: "main_bottom_left_top_bg".qdImageAsset(),
               ),
               //右下角的图片
               Positioned(
                 right: 0,
                 bottom: 0,
-                child: Image.asset("images/main_bottom_right_bottom_bg.png"),
+                child: "main_bottom_right_bottom_bg".qdImageAsset(),
               ),
 
               /// 中间的圆角框
@@ -1095,7 +1094,7 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
                       padding: EdgeInsets.symmetric(horizontal: 35),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage("images/main_bottom_title_bg.png"),
+                          image: "main_bottom_title_bg".qdImage(),
                           fit: BoxFit.fill,
                         ),
                       ),

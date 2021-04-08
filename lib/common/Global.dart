@@ -140,7 +140,11 @@ extension StringTransDouble on String {
 extension QDAssetImage on String {
   /// 根据字符串自身的内容，返回ImageProvider
   ImageProvider<Object> qdImage({String path: "images/", bool isPNG: true}) {
-// images/uc_icon_wallet.png
     return AssetImage("$path${this}.${isPNG ? 'png' : 'jpg'}");
+  }
+
+  /// 根据字符串内容，返回Image.asset
+  Widget qdImageAsset({String path: "images/", bool isPNG: true}) {
+    return Image.asset("$path${this}.${isPNG ? 'png' : 'jpg'}");
   }
 }
