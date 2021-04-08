@@ -10,44 +10,24 @@ import '../models/QDDocumentItem.dart';
 import 'QDWebView.dart';
 
 /// 新闻界面
-class QDNewsView extends StatelessWidget {
+class QDNewsIndexView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text('资讯'),
       ),
-      child: QDNewsPageBody(),
+      child: QDNewsIndexPageBody(),
     );
-
-    // Scaffold(
-    //   //导航栏
-    //   appBar: AppBar(
-    //     title: Text("资讯"),
-    //     leading: IconButton(
-    //       icon: Icon(
-    //         Icons.arrow_back_ios_outlined,
-    //         color: Color.fromRGBO(76, 77, 76, 1),
-    //       ),
-    //       onPressed: () {
-    //         Navigator.pop(context);
-    //       },
-    //     ),
-    //     elevation: 2,
-    //     shadowColor: Colors.black12,
-    //   ),
-    //   //实现功能的载体
-    //   body: QDNewsPageBody(),
-    // );
   }
 }
 
-class QDNewsPageBody extends StatefulWidget {
+class QDNewsIndexPageBody extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => QDNewsPageBodyState();
+  State<StatefulWidget> createState() => QDNewsPageIndexBodyState();
 }
 
-class QDNewsPageBodyState extends State<QDNewsPageBody> {
+class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
   /// 网络请求
   var httpUtil = HttpUtil();
 
