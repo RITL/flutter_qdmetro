@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 //路由的界面
-import '../routes/QDNewsPage.dart';
-import '../routes/QDWebViewPage.dart';
+import '../routes/QDNewsView.dart';
+import '../routes/QDWebView.dart';
 
 // enum QDRouterPlatform {
 //   case newsIndex,
@@ -13,8 +13,8 @@ class QDRouters {
   /// 全局配置的路由
   static Map<String, WidgetBuilder> routes() {
     return {
-      '/web': (BuildContext context) => QDWebViewPage(),
-      '/newsIndex': (BuildContext context) => QDNewsPage(),
+      '/web': (BuildContext context) => QDWebView(),
+      '/newsIndex': (BuildContext context) => QDNewsView(),
     };
   }
 }

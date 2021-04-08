@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 /// 子界面
-import 'QDMainPage.dart';
+import 'QDMainView.dart';
 import "QDNewsPage.dart";
 
 /// tabBarController
@@ -39,7 +39,7 @@ class _QDTabControllerState extends State<QDTabController> {
         tabBuilder: (BuildContext context, int index) {
           switch (index) {
             case 0:
-              return QDMainPage();
+              return QDMainView();
             case 2:
               return QDNewsPage();
               return Container();

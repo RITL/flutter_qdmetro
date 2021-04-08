@@ -7,20 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_qdmetro/common/HttpUtil.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
+
 import 'package:geolocator/geolocator.dart';
-import 'QDWebViewPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'QDWebView.dart';
 import '../components/QDDocumentRow.dart';
 import '../models/QDHomePageContainer.dart';
 
-class QDMainPage extends StatefulWidget {
-  QDMainPage({Key key}) : super(key: key);
+class QDMainView extends StatefulWidget {
+  QDMainView({Key key}) : super(key: key);
 
   @override
-  _QDMainPageState createState() => _QDMainPageState();
+  _QDMainViewState createState() => _QDMainViewState();
 }
 
-class _QDMainPageState extends State<QDMainPage> with TickerProviderStateMixin {
+class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
   /// 是否存在导航栏
   bool _hasNavigationBar = false;
 
@@ -280,7 +282,7 @@ class _QDMainPageState extends State<QDMainPage> with TickerProviderStateMixin {
           ? Container()
           : Swiper(
               itemCount: items.length,
-              autoplay: false,
+              autoplay: isLoop,
               loop: isLoop,
               itemBuilder: ((context, index) => CachedNetworkImage(
                     imageUrl: items[index].imgUrl,

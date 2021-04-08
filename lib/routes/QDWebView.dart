@@ -8,14 +8,14 @@ class QDWebViewConfig {
   QDWebViewConfig({this.url, this.webTitle: "详情"});
 }
 
-class QDWebViewPage extends StatefulWidget {
+class QDWebView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _QDWebViewPageState();
+    return _QDWebViewState();
   }
 }
 
-class _QDWebViewPageState extends State<QDWebViewPage> {
+class _QDWebViewState extends State<QDWebView> {
   QDWebViewConfig url;
 
   @override
@@ -50,14 +50,5 @@ class _QDWebViewPageState extends State<QDWebViewPage> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text(_config.webTitle),
-    //     elevation: 2,
-    //     shadowColor: Colors.black12,
-    //   ),
-    //   body:
-    // );
   }
 }
