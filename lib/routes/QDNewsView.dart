@@ -7,10 +7,10 @@ import '../common/HttpUtil.dart';
 import '../models/QDRouterItem.dart';
 import '../models/QDListHeaderContainer.dart';
 import '../models/QDDocumentItem.dart';
-import 'QDWebViewPage.dart';
+import 'QDWebView.dart';
 
 /// 新闻界面
-class QDNewsPage extends StatelessWidget {
+class QDNewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(

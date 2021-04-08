@@ -393,9 +393,9 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
-              color: CupertinoColors.systemRed,
-            ),
+            // decoration: BoxDecoration(
+            //   color: CupertinoColors.systemRed,
+            // ),
             child: GridView.count(
               padding: EdgeInsets.zero,
               physics: NeverScrollableScrollPhysics(),

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 /// 子界面
 import 'QDMainView.dart';
-import "QDNewsPage.dart";
+import 'QDNewsView.dart';
+import 'QDMineView.dart';
 
 /// tabBarController
 class QDTabController extends StatefulWidget {
@@ -41,7 +42,9 @@ class _QDTabControllerState extends State<QDTabController> {
             case 0:
               return QDMainView();
             case 2:
-              return QDNewsPage();
+              return QDNewsView();
+            case 3:
+              return QDMineView();
               return Container();
           }
         });

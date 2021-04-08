@@ -6,35 +6,38 @@ class Global {
   /// 白色
   static var whiteColor = CupertinoColors.white;
 
-  /// 主题色
+  /// 主题色 105 201 121
   static var themeColor = Color.fromRGBO(105, 201, 121, 1);
 
-  /// 默认渐变色的左色调
+  /// 默认渐变色的左色调 59 204 88
   static var defaultThemeLeadingColor = Color.fromRGBO(59, 204, 88, 1);
 
-  /// 默认渐变色的右色调
+  /// 默认渐变色的右色调 35, 184, 65
   static var defaultThemeTralingColor = Color.fromRGBO(35, 184, 65, 1);
 
-  /// 用于展示的橘色
+  /// 用于展示的橘色 252, 139, 0,
   static var orangeColor = Color.fromRGBO(252, 139, 0, 1);
 
-  /// 浅橘色
+  /// 浅橘色 253, 244, 234
   static var ligjtOrangeColor = Color.fromRGBO(253, 244, 234, 1);
 
-  /// 边距的颜色
+  /// 边距的颜色 204
   static var borderGrayColor = 204.qdColor();
 
-  /// 导航栏出返回按钮的默认颜色
+  /// 导航栏出返回按钮的默认颜色 76, 77, 76
   static var backArrowDefaultColor = Color.fromRGBO(76, 77, 76, 1);
 
-  /// 项目中默认的黑色
+  /// 项目中默认的黑色 89, 88, 89
   static var blackColor = Color.fromRGBO(89, 88, 89, 1);
 
-  /// 项目中的灰色
+  /// 项目中的灰色 153
   static var grayColor = 153.qdColor();
 
-  /// 主页的背景色
+  /// 主页的背景色 247
   static var mainPageBackgroundColor = 247.qdColor();
+
+  /// 分割线 230
+  static var separateColor = 230.qdColor();
 
   /// 时间日期格式转化
   static String transDateToString(int timeDuration,
@@ -131,5 +134,13 @@ extension QDColors on int {
 extension StringTransDouble on String {
   double toDouble() {
     return double.parse(this);
+  }
+}
+
+extension QDAssetImage on String {
+  /// 根据字符串自身的内容，返回ImageProvider
+  ImageProvider<Object> qdImage({String path: "images/", bool isPNG: true}) {
+// images/uc_icon_wallet.png
+    return AssetImage("$path${this}.${isPNG ? 'png' : 'jpg'}");
   }
 }

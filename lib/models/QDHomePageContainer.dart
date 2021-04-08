@@ -1,6 +1,8 @@
 // To parse this JSON data, do
 //
 //     final QDHomePageContainer = QDHomePageContainerFromMap(jsonString);
+//
+// 主页的数据结构
 
 import 'dart:convert';
 import 'QDDocumentItem.dart';

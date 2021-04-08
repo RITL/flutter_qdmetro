@@ -77,6 +77,24 @@ flutter:
     - images/main_bottom_left_top_bg.png
     - images/main_bottom_right_bottom_bg.png
     - images/main_bottom_title_bg.png
+
+    #个人中心
+    - images/uc_arrow_right.png
+    - images/uc_header_background.png
+    - images/uc_header_item_container_background.png
+    - images/uc_icon_wallet.png
+    - images/uc_icon_discount.png
+    - images/uc_icon_integral.png
+    - images/uc_authenticated.png #实名认证
+    ## 个人中心的固定icon
+    - images/uc_icon_zhifu.png
+    - images/uc_icon_jilu.png
+    - images/uc_icon_fapiao.png
+    - images/uc_icon_message.png
+    - images/uc_icon_kefu.png
+    - images/uc_icon_shoucang.png
+    - images/uc_icon_share.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
