@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
 import '../components/QDTitleRow.dart';
 
-class QDMineView extends StatefulWidget {
+class QDMineIndexView extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _QDMineViewState();
+  State<StatefulWidget> createState() => _QDMineIndexViewState();
 }
 
-class _QDMineViewState extends State<QDMineView> {
+class _QDMineIndexViewState extends State<QDMineIndexView> {
   //记录列表数据源
   var _titles = [
     ["支付管理", "乘车记录", "开具发票"],
@@ -32,42 +32,44 @@ class _QDMineViewState extends State<QDMineView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
-        decoration: BoxDecoration(
-          color: 245.qdColor(),
-        ),
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _listViewHeaderView(),
-                childCount: 1,
+    return CupertinoPageScaffold(
+      child: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+            color: 245.qdColor(),
+          ),
+          child: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => _listViewHeaderView(),
+                  childCount: 1,
+                ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: _titles[index].length,
-                    shrinkWrap: true,
-                    // itemExtent: 52.5,
-                    itemBuilder: (context, itemIndex) => Container(
-                      height: _listViewBuildItemHeight(
-                          itemIndex, _titles[index].length),
-                      child: _listViewBuildItem(itemIndex, index),
-                    ),
-                  );
-                },
-                childCount: _titles.length,
-              ),
-            )
-          ],
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: _titles[index].length,
+                      shrinkWrap: true,
+                      // itemExtent: 52.5,
+                      itemBuilder: (context, itemIndex) => Container(
+                        height: _listViewBuildItemHeight(
+                            itemIndex, _titles[index].length),
+                        child: _listViewBuildItem(itemIndex, index),
+                      ),
+                    );
+                  },
+                  childCount: _titles.length,
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 
   //MARK: 头部

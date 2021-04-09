@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import '../common/Global.dart';
 
 /// 子界面
-import 'QDMainView.dart';
-import 'QDNewsView.dart';
-import 'QDMineView.dart';
+import 'QDMainIndexView.dart';
+import 'QDNewsIndexView.dart';
+import 'QDMineIndexView.dart';
+import 'QDMapIndexView.dart';
 
 /// tabBarController
 class QDTabController extends StatefulWidget {
@@ -41,11 +42,13 @@ class _QDTabControllerState extends State<QDTabController> {
         tabBuilder: (BuildContext context, int index) {
           switch (index) {
             case 0:
-              return QDMainView();
+              return QDMainIndexView();
+            case 1:
+              return QDMapIndexView();
             case 2:
-              return QDNewsView();
+              return QDNewsIndexView();
             case 3:
-              return QDMineView();
+              return QDMineIndexView();
               return Container();
           }
         });

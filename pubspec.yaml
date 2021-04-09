@@ -28,13 +28,24 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   dio: ^3.0.10
-  geolocator: ^7.0.1
+  ## 由于高德地图amap_flutter_location1.0.0的限制，所使用的最高版本为6.2.1
+  geolocator: ^6.2.1
   package_info: ^0.4.0
   date_format: ^2.0.2
+  # flutter_map: ^0.12.0
+  # logging: ^0.11.4
+  # latlong: ^0.6.1
+  # stream_transform: ^1.2.0
+  # build_resolvers: ^2.0.0
+  permission_handler: ^5.0.1
   flutter_swiper: ^1.1.6
   cupertino_icons: ^1.0.2
   webview_flutter: ^2.0.2
   cached_network_image: ^2.5.1
+  #高德未适配flutter 2.x
+  amap_flutter_location: ^1.0.0
+  amap_flutter_map: ^1.0.0
+
 
   
 
@@ -43,7 +54,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^1.12.2
+  # 由于高德地图依赖 stream_transform 1.2.0 不能将build_runner升至12
+  build_runner: ^1.11.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

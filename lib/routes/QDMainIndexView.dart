@@ -7,24 +7,28 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_qdmetro/common/HttpUtil.dart';
 import 'package:flutter_qdmetro/common/Global.dart';
-
-import 'package:geolocator/geolocator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'QDWebView.dart';
+import '../common/QDLocationManager.dart';
 import '../components/QDDocumentRow.dart';
 import '../models/QDHomePageContainer.dart';
+// import '../common/QDLocationManager.dart';
 
-class QDMainView extends StatefulWidget {
-  QDMainView({Key key}) : super(key: key);
+class QDMainIndexView extends StatefulWidget {
+  QDMainIndexView({Key key}) : super(key: key);
 
   @override
-  _QDMainViewState createState() => _QDMainViewState();
+  _QDMainIndexViewState createState() => _QDMainIndexViewState();
 }
 
-class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
+class _QDMainIndexViewState extends State<QDMainIndexView>
+    with TickerProviderStateMixin {
   /// 是否存在导航栏
   bool _hasNavigationBar = false;
+
+  /// 定位
+  QDLocationManager _locationManager = QDLocationManager();
 
   /// 列表的数据源
   QDHomePageContainer _listDataContainer;
@@ -34,6 +38,9 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
   int _currentLineIndex = 0;
   double _currentLineOriginX = -7.0;
   double _beforeLineOriginX = -7.0;
+
+  ///记录下拉刷新
+  bool isHeaderLoading = false;
 
   /// 列表控制器
   ScrollController _scrollController = ScrollController();
@@ -89,6 +96,7 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
   void dispose() {
     _scrollController.dispose();
     _animationController.dispose();
+    _locationManager.dispose();
     super.dispose();
   }
 
@@ -109,7 +117,20 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
                   controller: _scrollController,
                   slivers: [
                     /// 刷新组件
-                    CupertinoSliverRefreshControl(),
+                    CupertinoSliverRefreshControl(
+                      // refreshIndicatorExtent: 50.0,
+                      onRefresh: () async {
+                        //正在下拉刷新中，直接return即可
+                        if (isHeaderLoading) {
+                          return Future.value(true);
+                        }
+                        setState(() {
+                          isHeaderLoading = true;
+                        });
+                        await _requestAllData();
+                        return Future.value(true);
+                      },
+                    ),
 
                     /// List
                     SliverList(
@@ -1122,45 +1143,41 @@ class _QDMainViewState extends State<QDMainView> with TickerProviderStateMixin {
 
   //MARK: 网络请求以及定位的逻辑
 
+  // _requestAllData() async {
+  //   //获得定位
+  //   var position = await LocationManager.getLocation(complete);
+  //   //主页的数据
+  //   double latitude = position?.latitude ?? 36.131241;
+  //   double longitude = position?.longitude ?? 120.409693;
+  //   //获得数据
+  //   QDHomePageContainer container =
+  //       await _requestListContainer(longitude: longitude, latitude: latitude);
+
+  //   //设置值即可
+  //   setState(() {
+  //     _listDataContainer = container;
+  //     _currentLine = container.nearByStation?.lineData?.first?.line ?? 0;
+  //     _currentLineIndex = 0;
+  //   });
+  // }
+
   _requestAllData() async {
     //获得定位
-    var position = await _getLocationAndLoadData();
-    //主页的数据
+    var position = await _locationManager.getLocationWithGeolocator();
+
     double latitude = position.latitude ?? 36.131241;
     double longitude = position.longitude ?? 120.409693;
     //获得数据
-    QDHomePageContainer container =
+    var container =
         await _requestListContainer(longitude: longitude, latitude: latitude);
 
     //设置值即可
     setState(() {
       _listDataContainer = container;
+      isHeaderLoading = false;
       _currentLine = container.nearByStation?.lineData?.first?.line ?? 0;
       _currentLineIndex = 0;
     });
-  }
-
-  /// 获取定位并请求数据信息
-  Future<Position> _getLocationAndLoadData() async {
-    //请求位置即可
-    try {
-      var position =
-          await Geolocator.getCurrentPosition(timeLimit: Duration(seconds: 6));
-      return Future.value(position);
-    } catch (e) {
-      return Future.value(
-        Position(
-          longitude: 120.409693,
-          latitude: 36.131241,
-          timestamp: DateTime.now(),
-          accuracy: 0.0,
-          altitude: 0.0,
-          heading: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0,
-        ),
-      );
-    }
   }
 
   /// 进行网络请求

@@ -1,4 +1,15 @@
 PODS:
+  - AMap3DMap (7.8.0):
+    - AMapFoundation (~> 1.6.4)
+  - amap_flutter_location (0.0.1):
+    - AMapLocation (~> 2.6.7)
+    - Flutter
+  - amap_flutter_map (0.0.1):
+    - AMap3DMap
+    - Flutter
+  - AMapFoundation (1.6.5.1)
+  - AMapLocation (2.6.7):
+    - AMapFoundation (~> 1.6.4)
   - Flutter (1.0.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -9,6 +20,8 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -16,18 +29,28 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - amap_flutter_location (from `.symlinks/plugins/amap_flutter_location/ios`)
+  - amap_flutter_map (from `.symlinks/plugins/amap_flutter_map/ios`)
   - Flutter (from `Flutter`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
+    - AMap3DMap
+    - AMapFoundation
+    - AMapLocation
     - FMDB
 
 EXTERNAL SOURCES:
+  amap_flutter_location:
+    :path: ".symlinks/plugins/amap_flutter_location/ios"
+  amap_flutter_map:
+    :path: ".symlinks/plugins/amap_flutter_map/ios"
   Flutter:
     :path: Flutter
   geolocator:
@@ -36,20 +59,28 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
+  AMap3DMap: 3e4fac78e3e023cefd47e7d7715ef5ea69bfd0fa
+  amap_flutter_location: 3e33b57f1aad80b0dfb4b399de857a1a9f071e62
+  amap_flutter_map: 979e54d227cedac6c7504a2151bfbf3bcf96760a
+  AMapFoundation: b67560a6f21aab81c8c12f84616b55a3833b6253
+  AMapLocation: a46c30d9930d0f3a3bd21139d8f845d10ac3f01d
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 4e8039762af0ca4bf912f4123e685906621453b8
 
 COCOAPODS: 1.10.1
