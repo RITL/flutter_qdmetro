@@ -50,14 +50,20 @@ class HttpDefaultInterceptor extends Interceptor {
       //获得data
       //如果类型是formData
       if (options.contentType == ContentType.text.toString() &&
-          options.data is Map) {
+          options.data is Map<String, dynamic>) {
         options.data = FormData.fromMap(
-            (options.data ?? Map<dynamic, dynamic>())..addAll(commonMap));
+            (options.data ?? Map<String, dynamic>())..addAll(commonMap));
       }
       //如果是普通的Map
-      else if (options.data is Map) {
-        options.data = (options.data ?? Map<dynamic, dynamic>())
+      else if (options.data is Map<String, dynamic>) {
+        options.data = (options.data ?? Map<String, dynamic>())
           ..addAll(commonMap);
+      }
+      //如果是空参数，直接进行公共参数即可
+      else if (options.data is Map &&
+          (options.data as Map).isEmpty &&
+          options.contentType == ContentType.text.toString()) {
+        options.data = FormData.fromMap(commonMap);
       }
     }
 

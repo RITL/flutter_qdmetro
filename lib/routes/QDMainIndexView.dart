@@ -1165,8 +1165,8 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
     //获得定位
     var position = await _locationManager.getLocationWithGeolocator();
 
-    double latitude = position.latitude ?? 36.131241;
-    double longitude = position.longitude ?? 120.409693;
+    double latitude = position?.latitude ?? 36.131241;
+    double longitude = position?.longitude ?? 120.409693;
     //获得数据
     var container =
         await _requestListContainer(longitude: longitude, latitude: latitude);

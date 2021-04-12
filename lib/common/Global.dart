@@ -9,6 +9,9 @@ class Global {
   /// 主题色 105 201 121
   static var themeColor = Color.fromRGBO(105, 201, 121, 1);
 
+  /// 某个版本更换的主题色 47 189 75
+  static var newThemeColor = Color.fromRGBO(47, 189, 75, 1);
+
   /// 默认渐变色的左色调 59 204 88
   static var defaultThemeLeadingColor = Color.fromRGBO(59, 204, 88, 1);
 

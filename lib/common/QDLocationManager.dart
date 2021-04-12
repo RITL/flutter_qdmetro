@@ -11,11 +11,11 @@ typedef LocationCallback = void Function(QDPosition position);
 
 class QDPosition {
   QDPosition(
-      {this.longitude: 120.409693, this.latitude: 36.131241, this.code: 0});
+      {this.longitude: 120.409693, this.latitude: 36.131241, this.code: 9999});
 
   final double longitude;
   final double latitude;
-  // 0表示失败，1表示成功，-1表示没有权限
+  // 9999表示初始化 0表示失败，1表示成功，-1表示没有权限
   final int code;
 }
 
@@ -30,7 +30,8 @@ class QDLocationManager {
   /// 用于定位是否监听
   static StreamSubscription<Map<String, Object>> _locationListener;
 
-  static initAMap() {
+  /// 初始化高德定位
+  static initAMapLocation() {
     AMapFlutterLocation.setApiKey("", iOSApiKey);
   }
 
@@ -46,14 +47,14 @@ class QDLocationManager {
   }
 
   /// 默认的位置Future
-  Future<QDPosition> _defaultPositionFuture(int code) {
+  static Future<QDPosition> _defaultPositionFuture({int code: 9999}) {
     Future.value(
-      _defaultPosition(code),
+      defaultPosition(code: code),
     );
   }
 
   /// 默认的位置
-  QDPosition _defaultPosition(int code) {
+  static QDPosition defaultPosition({int code: 9999}) {
     return QDPosition(
       longitude: 120.409693,
       latitude: 36.131241,
@@ -88,7 +89,7 @@ class QDLocationManager {
       return Future.value(QDPosition(
           latitude: position.latitude, longitude: position.longitude, code: 1));
     } catch (e) {
-      return _defaultPositionFuture(0);
+      return _defaultPositionFuture(code: 0);
     }
   }
 
@@ -100,7 +101,7 @@ class QDLocationManager {
     QDLocationManager._requestLocationPermission().then((hasAuthorization) {
       /// 不存在权限，返回默认的即可
       if (!hasAuthorization) {
-        completeHandler(_defaultPosition(-1));
+        completeHandler(defaultPosition(code: -1));
         return;
       }
       //初始化变量
@@ -110,8 +111,7 @@ class QDLocationManager {
 
       //设置定位的option
       _aliMaplocationPlugin.setLocationOption(AMapLocationOption(
-          onceLocation: true,
-          desiredAccuracy: DesiredAccuracy.NearestTenMeters));
+          onceLocation: true, desiredAccuracy: DesiredAccuracy.Kilometer));
       //如果监听接口为空，则注册接口即可
       if (_locationListener == null) {
         _locationListener =
@@ -121,7 +121,7 @@ class QDLocationManager {
           int errorCode = result["errorCode"];
           //如果errorCode不是null,返回失败即可
           if (errorCode != null) {
-            completeHandler(_defaultPosition(0));
+            completeHandler(defaultPosition(code: 0));
             return;
           }
           //获得经纬度

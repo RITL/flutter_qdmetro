@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     );
 
     //注册高德地图
-    QDLocationManager.initAMap();
+    QDLocationManager.initAMapLocation();
 
     return CupertinoApp(
       title: '青岛地铁 Flutter',

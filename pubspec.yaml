@@ -37,6 +37,7 @@ dependencies:
   # latlong: ^0.6.1
   # stream_transform: ^1.2.0
   # build_resolvers: ^2.0.0
+  rflutter_alert: ^2.0.2
   permission_handler: ^5.0.1
   flutter_swiper: ^1.1.6
   cupertino_icons: ^1.0.2
@@ -89,6 +90,10 @@ flutter:
     - images/main_bottom_left_top_bg.png
     - images/main_bottom_right_bottom_bg.png
     - images/main_bottom_title_bg.png
+
+    #地图
+    - images/map_index_footer_transfer.png
+    - images/map_index_footer_container_background.png
 
     #个人中心
     - images/uc_arrow_right.png

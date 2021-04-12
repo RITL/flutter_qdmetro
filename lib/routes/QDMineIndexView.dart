@@ -141,7 +141,7 @@ class _QDMineIndexViewState extends State<QDMineIndexView> {
                     children: [
                       Flexible(
                         child: Text(
-                          "岳小文108",
+                          "Yuexiaowen108",
                           style: TextStyle(
                             color: Global.blackColor,
                             fontSize: 20,
