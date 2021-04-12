@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import '../common/Global.dart';
 
 /// 用于个人中心的行
-class QDTitleRow extends StatefulWidget {
+class QDTitleRow extends StatelessWidget {
   /// 初始化方法
   QDTitleRow(
       {Key key,
@@ -17,11 +17,6 @@ class QDTitleRow extends StatefulWidget {
   final String subtitle;
   final bool hasDivider;
 
-  @override
-  State<StatefulWidget> createState() => _QDTitleRowState();
-}
-
-class _QDTitleRowState extends State<QDTitleRow> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,7 +38,7 @@ class _QDTitleRowState extends State<QDTitleRow> {
                     ),
                     // Image(image: AssetImage(), width: 24, height: 24,),
                     Image(
-                      image: widget.imageName.qdImage(),
+                      image: imageName.qdImage(),
                       width: 24,
                       height: 24,
                       // decoration:
@@ -51,7 +46,7 @@ class _QDTitleRowState extends State<QDTitleRow> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      widget?.title ?? "",
+                      title ?? "",
                       style: TextStyle(
                           color: Global.blackColor,
                           fontWeight: FontWeight.w300),
@@ -61,7 +56,7 @@ class _QDTitleRowState extends State<QDTitleRow> {
                 Row(
                   children: [
                     Text(
-                      widget?.subtitle ?? "",
+                      subtitle ?? "",
                       style: TextStyle(
                         color: Global.grayColor,
                         fontWeight: FontWeight.w300,
@@ -83,7 +78,7 @@ class _QDTitleRowState extends State<QDTitleRow> {
           ),
         ),
         SizedBox(
-          height: (widget?.hasDivider ?? false) ? 0.5 : 0.0,
+          height: (hasDivider ?? false) ? 0.5 : 0.0,
           child: Container(
             margin: EdgeInsets.only(left: 45, right: 20),
             decoration: BoxDecoration(

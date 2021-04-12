@@ -10,16 +10,12 @@ class QDDocumentRowItem {
   bool hasDivider = false;
 }
 
-class QDDocumentRow extends StatefulWidget {
+class QDDocumentRow extends StatelessWidget {
   /// 创建传值
   QDDocumentRow({Key key, this.item}) : super(key: key);
 
   final QDDocumentRowItem item;
-  @override
-  State<StatefulWidget> createState() => _QDDocumentRowState();
-}
 
-class _QDDocumentRowState extends State<QDDocumentRow> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,7 +32,7 @@ class _QDDocumentRowState extends State<QDDocumentRow> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.item.title,
+                        item.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -47,7 +43,7 @@ class _QDDocumentRowState extends State<QDDocumentRow> {
                       Container(
                         margin: EdgeInsets.only(top: 3),
                         child: Text(
-                          widget.item.subtitle,
+                          item.subtitle,
                           style: TextStyle(
                             color: Color.fromRGBO(179, 179, 179, 1),
                             fontSize: 12,
@@ -62,7 +58,7 @@ class _QDDocumentRowState extends State<QDDocumentRow> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    widget.item.imgUrl,
+                    item.imgUrl,
                     width: 100,
                     height: 68,
                     fit: BoxFit.cover,
@@ -73,8 +69,7 @@ class _QDDocumentRowState extends State<QDDocumentRow> {
         SizedBox(
           height: 0.5,
           child: Divider(
-            color:
-                Color.fromRGBO(237, 240, 238, widget.item.hasDivider ? 1 : 0),
+            color: Color.fromRGBO(237, 240, 238, item.hasDivider ? 1 : 0),
             indent: 2,
             endIndent: 2,
           ),
