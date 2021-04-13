@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 
-class Global {
+class QDColors {
   /// 白色
   static var whiteColor = CupertinoColors.white;
 
@@ -42,16 +42,18 @@ class Global {
   /// 分割线 230
   static var separateColor = 230.qdColor();
 
+  /// 青岛地铁线路未选中的颜色
+  static List<Color> metroLineUnselectedGradientColors() {
+    return [255.qdColor(), 240.qdColor()];
+  }
+}
+
+class QDGlobal {
   /// 时间日期格式转化
   static String transDateToString(int timeDuration,
       {List<String> format: const ['mm', "-", "dd"]}) {
     return formatDate(
         DateTime.fromMillisecondsSinceEpoch(timeDuration), format);
-  }
-
-  /// 青岛地铁线路未选中的颜色
-  static List<Color> metroLineUnselectedGradientColors() {
-    return [255.qdColor(), 240.qdColor()];
   }
 }
 
@@ -73,7 +75,7 @@ extension QDMetroColor on String {
       case "1":
         return Color.fromRGBO(252, 181, 58, 1);
       default:
-        return Global.themeColor;
+        return QDColors.themeColor;
     }
   }
 
