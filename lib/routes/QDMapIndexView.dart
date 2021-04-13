@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:amap_flutter_base/amap_flutter_base.dart';
 // import 'package:flutter/material.dart';
-import 'package:flutter_qdmetro/common/Global.dart';
-import 'package:flutter_qdmetro/common/HttpUtil.dart';
+// import 'package:flutter/material.dart';
+import 'package:flutter_qdmetro/common/QDGlobal.dart';
+import 'package:flutter_qdmetro/common/QDHttpUtil.dart';
 import 'package:flutter_qdmetro/common/QDLocationManager.dart';
 import 'package:flutter_qdmetro/components/QDDottedLine.dart';
 
@@ -110,7 +111,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
           // width: 100,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Global.whiteColor,
+            color: QDColors.whiteColor,
             // image: DecorationImage(
             //   centerSlice: Rect.fromLTWH(10, 0, 20, 10),
             //   image: "map_index_footer_container_background".qdImage(),
@@ -126,7 +127,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: Global.mainPageBackgroundColor,
+                  color: QDColors.mainPageBackgroundColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +141,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                           height: 8,
                           width: 8,
                           decoration: BoxDecoration(
-                            color: Global.newThemeColor,
+                            color: QDColors.newThemeColor,
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
@@ -150,7 +151,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                           height: 30,
                           width: 10,
                           child: QDDottedLine(
-                            color: Global.separateColor,
+                            color: QDColors.separateColor,
                             direction: Axis.vertical,
                             dashWidth: 3,
                             height: 4,
@@ -179,13 +180,13 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                                 border: Border(
                                     bottom: BorderSide(
                                   width: 0.5,
-                                  color: Global.separateColor,
+                                  color: QDColors.separateColor,
                                 )),
                               ),
                               height: 40,
                               child: CupertinoTextField(
                                 style: TextStyle(
-                                  color: Global.blackColor,
+                                  color: QDColors.blackColor,
                                   fontSize: 16,
                                 ),
                                 controller: _startTextController,
@@ -206,7 +207,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                               height: 40,
                               child: CupertinoTextField(
                                 style: TextStyle(
-                                  color: Global.blackColor,
+                                  color: QDColors.blackColor,
                                   fontSize: 16,
                                 ),
                                 controller: _endTextController,
@@ -247,8 +248,8 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
                       colors: [
-                        Global.defaultThemeLeadingColor,
-                        Global.defaultThemeTralingColor
+                        QDColors.defaultThemeLeadingColor,
+                        QDColors.defaultThemeTralingColor
                       ],
                     )),
                 child: Row(
@@ -258,7 +259,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                       child: Text(
                         "搜索",
                         style: TextStyle(
-                          color: Global.whiteColor,
+                          color: QDColors.whiteColor,
                         ),
                       ),
                       onTap: () {
@@ -288,7 +289,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                                 e.name,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Global.blackColor,
+                                  color: QDColors.blackColor,
                                 ),
                               ),
                             ],
@@ -319,7 +320,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
 
   /// 获得icon
   _requestAllIcons() async {
-    Map response = await HttpUtil().post("/ngstatic/travel/indexIcons", {});
+    Map response = await QDHttpUtil().post("/ngstatic/travel/indexIcons", {});
     //进行模型转换
     List icons = response["appIcons"] ?? [];
     //进行赋值转换
@@ -333,7 +334,19 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
   _searchButtonDidTap() {
     //获得两个文本域的文字
     _endEdit();
-    print("${_startTextController.text}" + "${_endTextController.text}");
+
+    showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Text("搜索啦!"),
+              content: Text(
+                  "起点是: ${_startTextController.text} \n 目的地是: ${_endTextController.text}"),
+              actions: [
+                Text("取消"),
+              ],
+            ));
+
+    // print("${_startTextController.text}" + "${_endTextController.text}");
   }
 
   _exchangeStartAndEnd() {

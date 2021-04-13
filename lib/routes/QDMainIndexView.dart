@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_qdmetro/common/HttpUtil.dart';
-import 'package:flutter_qdmetro/common/Global.dart';
+import 'package:flutter_qdmetro/common/QDHttpUtil.dart';
+import 'package:flutter_qdmetro/common/QDGlobal.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'QDWebView.dart';
@@ -111,7 +111,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Global.mainPageBackgroundColor,
+                  color: QDColors.mainPageBackgroundColor,
                 ),
                 child: CustomScrollView(
                   controller: _scrollController,
@@ -216,7 +216,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                         ? Text(
                             "畅达幸福",
                             style: TextStyle(
-                              color: Global.blackColor,
+                              color: QDColors.blackColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
@@ -371,7 +371,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
         Text(
           icon.name,
           style: TextStyle(
-            color: Global.blackColor,
+            color: QDColors.blackColor,
             fontSize: 10,
           ),
         ),
@@ -406,7 +406,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                 "查看更多>",
                 style: TextStyle(
                   fontSize: 12,
-                  color: Global.grayColor,
+                  color: QDColors.grayColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -483,7 +483,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     stationInfo.stationName,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Global.blackColor,
+                      color: QDColors.blackColor,
                     ),
                   ),
                 ),
@@ -494,7 +494,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                   "${stationInfo.walkTime == 0 ? '' : ',步行约${stationInfo.walkTime}分钟'}",
               style: TextStyle(
                 fontSize: 12,
-                color: Global.blackColor,
+                color: QDColors.blackColor,
               ),
             )
           ],
@@ -513,7 +513,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
         borderRadius: BorderRadius.circular(8),
         child: Container(
           decoration: BoxDecoration(
-            color: Global.whiteColor,
+            color: QDColors.whiteColor,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -540,14 +540,14 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 3),
                           decoration: BoxDecoration(
-                            color: Global.ligjtOrangeColor,
+                            color: QDColors.ligjtOrangeColor,
                           ),
                           child: Text(
                             "到站时间仅为计划时间，请以实际到站时间为准.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 10,
-                              color: Global.orangeColor,
+                              color: QDColors.orangeColor,
                             ),
                           ),
                         ),
@@ -603,11 +603,11 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
         decoration: isOnly
             ? BoxDecoration(
                 gradient: LinearGradient(
-                  colors: Global.metroLineUnselectedGradientColors(),
+                  colors: QDColors.metroLineUnselectedGradientColors(),
                 ),
               )
             : BoxDecoration(
-                color: Global.mainPageBackgroundColor,
+                color: QDColors.mainPageBackgroundColor,
               ),
         child: Stack(
           children: [
@@ -665,7 +665,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
           gradient: LinearGradient(
             colors: _currentLine == data.line
                 ? "${data.line}".metroLineGradientColors()
-                : [Global.borderGrayColor, Global.borderGrayColor],
+                : [QDColors.borderGrayColor, QDColors.borderGrayColor],
           ),
         ),
         child: Column(
@@ -675,7 +675,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
               "${data.lineName}",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Global.whiteColor,
+                  color: QDColors.whiteColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 13),
             )
@@ -774,7 +774,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     Text(
                       "往",
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
                       ),
@@ -782,7 +782,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     Text(
                       isLeft ? lineData.startStation : lineData.endStation,
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -796,7 +796,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     Text(
                       "本次列车",
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
                       ),
@@ -813,7 +813,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                               ? lineData.startTimeArray.first
                               : lineData.endTimeArray.last,
                           style: TextStyle(
-                            color: Global.orangeColor,
+                            color: QDColors.orangeColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -856,7 +856,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
           decoration: BoxDecoration(
             border: Border.all(
               width: 0.5,
-              color: Global.borderGrayColor,
+              color: QDColors.borderGrayColor,
             ),
             borderRadius: BorderRadius.circular(2),
           ),
@@ -865,7 +865,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Global.blackColor,
+                color: QDColors.blackColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
               ),
@@ -875,7 +875,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
         Text(
           time,
           style: TextStyle(
-            color: Global.blackColor,
+            color: QDColors.blackColor,
             fontSize: 12,
             fontWeight: FontWeight.w300,
           ),
@@ -931,7 +931,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
           key: Key(item.id),
           item: QDDocumentRowItem(
               title: item.title,
-              subtitle: Global.transDateToString(int.parse(item.time)),
+              subtitle: QDGlobal.transDateToString(int.parse(item.time)),
               imgUrl: item.image,
               hasDivider: index != items.length - 1),
         ),
@@ -967,7 +967,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
               "查看更多>",
               style: TextStyle(
                 fontSize: 12,
-                color: Global.grayColor,
+                color: QDColors.grayColor,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -1001,14 +1001,14 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     Text(
                       item.title,
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 12,
                       ),
                     ),
                     Text(
                       item.subtitle,
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 10,
                       ),
                     )
@@ -1019,14 +1019,14 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
                     Text(
                       item.number,
                       style: TextStyle(
-                        color: Global.blackColor,
+                        color: QDColors.blackColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(item.unit,
                         style: TextStyle(
-                          color: Global.blackColor,
+                          color: QDColors.blackColor,
                           fontSize: 12,
                         )),
                   ],
@@ -1184,7 +1184,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
   Future<QDHomePageContainer> _requestListContainer(
       {double longitude: 120.409693, double latitude: 36.131241}) async {
     //进行网络请求
-    Map response = await HttpUtil().post(
+    Map response = await QDHttpUtil().post(
         // 'https://www.fastmock.site/mock/3dbf639cdfdcfc128e6edd40c9042fd5/qdmetro/static/index',
         '/ngstatic/static/thirdlyIndex',
         {

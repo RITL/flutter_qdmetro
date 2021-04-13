@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'components/QDRouters.dart';
-import 'common/Global.dart';
+import 'common/QDGlobal.dart';
 import 'routes/QDTabController.dart';
 import 'common/QDLocationManager.dart';
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = CupertinoThemeData(
-      primaryColor: Global.blackColor,
+      primaryColor: QDColors.blackColor,
       brightness: Brightness.light,
     );
 

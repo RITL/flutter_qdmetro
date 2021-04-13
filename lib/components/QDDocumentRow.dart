@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../common/Global.dart';
+import '../common/QDGlobal.dart';
 
 class QDDocumentRowItem {
   QDDocumentRowItem({this.title, this.subtitle, this.imgUrl, this.hasDivider});
@@ -36,7 +36,7 @@ class QDDocumentRow extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Global.blackColor,
+                          color: QDColors.blackColor,
                           fontSize: 15,
                         ),
                       ),

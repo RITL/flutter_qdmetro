@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_qdmetro/common/Global.dart';
+import 'package:flutter_qdmetro/common/QDGlobal.dart';
 import '../components/QDTitleRow.dart';
 
 class QDMineIndexView extends StatefulWidget {
@@ -143,7 +143,7 @@ class _QDMineIndexViewState extends State<QDMineIndexView> {
                         child: Text(
                           "Yuexiaowen108",
                           style: TextStyle(
-                            color: Global.blackColor,
+                            color: QDColors.blackColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -208,7 +208,7 @@ class _QDMineIndexViewState extends State<QDMineIndexView> {
         return Container(
           height: 30,
           width: 0.5,
-          decoration: BoxDecoration(color: Global.separateColor),
+          decoration: BoxDecoration(color: QDColors.separateColor),
         );
       }
 
@@ -226,7 +226,7 @@ class _QDMineIndexViewState extends State<QDMineIndexView> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Global.blackColor,
+              color: QDColors.blackColor,
             ),
           )
         ],

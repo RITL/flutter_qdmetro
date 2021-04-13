@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../common/Global.dart';
+import '../common/QDGlobal.dart';
 
 /// 子界面
 import 'QDMainIndexView.dart';

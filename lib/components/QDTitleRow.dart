@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../common/Global.dart';
+import '../common/QDGlobal.dart';
 
 /// 用于个人中心的行
 class QDTitleRow extends StatelessWidget {
@@ -25,7 +25,7 @@ class QDTitleRow extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: Global.whiteColor,
+              color: QDColors.whiteColor,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,7 @@ class QDTitleRow extends StatelessWidget {
                     Text(
                       title ?? "",
                       style: TextStyle(
-                          color: Global.blackColor,
+                          color: QDColors.blackColor,
                           fontWeight: FontWeight.w300),
                     ),
                   ],
@@ -58,7 +58,7 @@ class QDTitleRow extends StatelessWidget {
                     Text(
                       subtitle ?? "",
                       style: TextStyle(
-                        color: Global.grayColor,
+                        color: QDColors.grayColor,
                         fontWeight: FontWeight.w300,
                         fontSize: 12,
                       ),

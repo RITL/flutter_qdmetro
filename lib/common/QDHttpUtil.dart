@@ -19,14 +19,14 @@ const int RECEIVE_TIMEOUT = 3000000;
 typedef ErrorCallBack = void Function(int count, String msg);
 
 /// 自己的异常
-class HttpIOException implements Exception {
+class QDHttpIOException implements Exception {
   int code;
   String message;
-  HttpIOException(this.code, this.message);
+  QDHttpIOException(this.code, this.message);
 }
 
 /// 默认的拦截器
-class HttpDefaultInterceptor extends Interceptor {
+class QDHttpDefaultInterceptor extends Interceptor {
   // @override
   Future onRequest(RequestOptions options) async {
     //获得公共参数
@@ -76,12 +76,13 @@ class HttpDefaultInterceptor extends Interceptor {
     var data =
         (response.data is Map) ? response.data : json.decode(response.data);
     if (data == null) {
-      return super.onError(DioError(error: HttpIOException(-4, "JSON 格式不正确")));
+      return super
+          .onError(DioError(error: QDHttpIOException(-4, "JSON 格式不正确")));
     }
     var respcod = data["respcod"];
     if (respcod != "01") {
       return super.onError(
-          DioError(error: HttpIOException(-4, data["respmsg"] ?? "数据返回错误!")));
+          DioError(error: QDHttpIOException(-4, data["respmsg"] ?? "数据返回错误!")));
     }
 
     response.data = data["data"] ?? Map<String, String>();
@@ -89,9 +90,9 @@ class HttpDefaultInterceptor extends Interceptor {
   }
 }
 
-class HttpUtil {
+class QDHttpUtil {
   /// 工厂模式返回单例
-  factory HttpUtil() => HttpUtil._shareInstance();
+  factory QDHttpUtil() => QDHttpUtil._shareInstance();
 
   /// 基础配置
   BaseOptions options;
@@ -100,18 +101,18 @@ class HttpUtil {
   Dio _dio;
 
   ///单例对象
-  static HttpUtil _shareUtil;
+  static QDHttpUtil _shareUtil;
 
   ///单例方法
-  static HttpUtil _shareInstance() {
+  static QDHttpUtil _shareInstance() {
     if (_shareUtil == null) {
-      _shareUtil = HttpUtil._init();
+      _shareUtil = QDHttpUtil._init();
     }
     return _shareUtil;
   }
 
   /// 初始化方法
-  HttpUtil._init() {
+  QDHttpUtil._init() {
     options = BaseOptions(
       contentType: ContentType.text.toString(), //默认为二进制
       connectTimeout: CONNECT_TIMECOUT,
@@ -120,7 +121,7 @@ class HttpUtil {
     );
     _dio = Dio(options);
     //追加拦截器
-    addInterceptor(HttpDefaultInterceptor());
+    addInterceptor(QDHttpDefaultInterceptor());
   }
 
   ///拦截器
@@ -171,11 +172,11 @@ class HttpUtil {
       //优先处理 DioError
     } on DioError catch (e) {
       return Future.error(
-          HttpIOException(e.response?.statusCode ?? -3, e.message));
+          QDHttpIOException(e.response?.statusCode ?? -3, e.message));
     } catch (e) {
-      return Future.error(HttpIOException(-2, e.toString()));
+      return Future.error(QDHttpIOException(-2, e.toString()));
     }
 
-    return Future.error(HttpIOException(-1, "not supported"));
+    return Future.error(QDHttpIOException(-1, "not supported"));
   }
 }

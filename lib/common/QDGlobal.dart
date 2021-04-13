@@ -114,14 +114,14 @@ extension QDMetroColor on String {
         ];
       default:
         return [
-          Global.defaultThemeLeadingColor,
-          Global.defaultThemeTralingColor
+          QDColors.defaultThemeLeadingColor,
+          QDColors.defaultThemeTralingColor
         ];
     }
   }
 }
 
-extension QDColors on int {
+extension QDColor on int {
   /// color
   Color qdColor({double opacity: 1}) {
     if (this < 0 || this > 255) {

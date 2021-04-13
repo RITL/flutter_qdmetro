@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_qdmetro/common/Global.dart';
+import 'package:flutter_qdmetro/common/QDGlobal.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import '../components/QDDocumentRow.dart';
-import '../common/HttpUtil.dart';
+import '../common/QDHttpUtil.dart';
 import '../models/QDRouterItem.dart';
 import '../models/QDListHeaderContainer.dart';
 import '../models/QDDocumentItem.dart';
@@ -29,7 +29,7 @@ class QDNewsIndexPageBody extends StatefulWidget {
 
 class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
   /// 网络请求
-  var httpUtil = HttpUtil();
+  var httpUtil = QDHttpUtil();
 
   /// 存放顶部banner的items
   List<QDRouterItem> topImages = [];
@@ -158,7 +158,7 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
           key: Key(item.id),
           item: QDDocumentRowItem(
               title: item.title,
-              subtitle: Global.transDateToString(int.parse(item.time)),
+              subtitle: QDGlobal.transDateToString(int.parse(item.time)),
               imgUrl: item.image,
               hasDivider: index != documents.length - 1),
         ),
@@ -268,7 +268,7 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
       setState(() {
         topImages = container.imgList;
       });
-    } on HttpIOException catch (e) {
+    } on QDHttpIOException catch (e) {
       print(e.message);
     }
   }
@@ -294,6 +294,6 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
         currentPage += 1;
         documents.addAll(items);
       });
-    } on HttpIOException catch (e) {}
+    } on QDHttpIOException catch (e) {}
   }
 }
