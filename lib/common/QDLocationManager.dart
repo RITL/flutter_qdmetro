@@ -15,7 +15,8 @@ class QDPosition {
 
   final double longitude;
   final double latitude;
-  // 9999表示初始化 0表示失败，1表示成功，-1表示没有权限
+
+  /// 9999表示初始化 0表示失败，1表示成功，-1表示没有权限
   final int code;
 }
 
@@ -48,7 +49,7 @@ class QDLocationManager {
 
   /// 默认的位置Future
   static Future<QDPosition> _defaultPositionFuture({int code: 9999}) {
-    Future.value(
+    return Future.value(
       defaultPosition(code: code),
     );
   }

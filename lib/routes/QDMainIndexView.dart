@@ -37,7 +37,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
   int _currentLine = 0;
   int _currentLineIndex = 0;
   double _currentLineOriginX = -7.0;
-  double _beforeLineOriginX = -7.0;
+  // double _beforeLineOriginX = -7.0;
 
   ///记录下拉刷新
   bool isHeaderLoading = false;
@@ -47,7 +47,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
 
   //动画控制器
   AnimationController _animationController;
-  Animation<double> _animation;
+  // Animation<double> _animation;
 
   @override
   void initState() {
@@ -86,8 +86,8 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
         AnimationController(duration: Duration(milliseconds: 300), vsync: this);
 
     //执行动画
-    _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
-        .animate(_animationController);
+    // _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
+    // .animate(_animationController);
     //开始获取定位并开始请求
     _requestAllData();
   }
@@ -577,7 +577,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
   /// 更新附近站点的相关唯一数据
   _updateCurrentIndexFrameOnNearStation() {
     setState(() {
-      _beforeLineOriginX = _currentLineOriginX;
+      // _beforeLineOriginX = _currentLineOriginX;
       _currentLineOriginX =
           _nearStationSegmentItemWidth() * (_currentLineIndex + 0.5) -
               _nearStationSegmentItemSwitchWidth() / 2.0;
@@ -587,8 +587,8 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
   /// 更新动画属性
   _updateAnimation() {
     setState(() {
-      _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
-          .animate(_animationController);
+      // _animation = Tween(begin: _beforeLineOriginX, end: _currentLineOriginX)
+      // .animate(_animationController);
     });
   }
 

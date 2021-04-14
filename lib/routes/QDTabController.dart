@@ -39,6 +39,7 @@ class _QDTabControllerState extends State<QDTabController> {
                   ))
               .toList(),
         ),
+        // ignore: missing_return
         tabBuilder: (BuildContext context, int index) {
           switch (index) {
             case 0:

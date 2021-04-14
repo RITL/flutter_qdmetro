@@ -8,6 +8,7 @@ import 'package:flutter_qdmetro/common/QDGlobal.dart';
 import 'package:flutter_qdmetro/common/QDHttpUtil.dart';
 import 'package:flutter_qdmetro/common/QDLocationManager.dart';
 import 'package:flutter_qdmetro/components/QDDottedLine.dart';
+import 'package:flutter_ritl_alert/flutter_ritl_alert.dart';
 
 import '../models/QDHomePageContainer.dart';
 
@@ -241,32 +242,32 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 12),
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        QDColors.defaultThemeLeadingColor,
-                        QDColors.defaultThemeTralingColor
-                      ],
-                    )),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: Text(
+              GestureDetector(
+                onTap: () {
+                  _searchButtonDidTap();
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 12),
+                  height: 40,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: [
+                          QDColors.defaultThemeLeadingColor,
+                          QDColors.defaultThemeTralingColor
+                        ],
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
                         "搜索",
                         style: TextStyle(
                           color: QDColors.whiteColor,
                         ),
                       ),
-                      onTap: () {
-                        _searchButtonDidTap();
-                      },
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -315,6 +316,17 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
         // _currentPosition = QDPosition(latitude: 38.000, longitude: 120.11111);
         _currentPosition = position;
       });
+
+      //如果定位是权限问题，弹窗提示一下
+      if (position.code != -1) {
+        return;
+      }
+      //弹窗提示即可
+      RITLAlert(
+        context: context,
+        title: "定位失败",
+        message: "请开启GPS定位服务，获取精准定位",
+      ).show();
     });
   }
 
@@ -334,17 +346,31 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
   _searchButtonDidTap() {
     //获得两个文本域的文字
     _endEdit();
+    //判断起点和终点
+    var message = _startTextController.text.isEmpty
+        ? "您从哪里触发?"
+        : _endTextController.text.isEmpty
+            ? "您到哪里去?"
+            : "";
 
-    showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-              title: Text("搜索啦!"),
-              content: Text(
-                  "起点是: ${_startTextController.text} \n 目的地是: ${_endTextController.text}"),
-              actions: [
-                Text("取消"),
-              ],
-            ));
+    RITLAlert(
+      context: context,
+      title: "点击了搜索",
+      message: message.isEmpty
+          ? "起点是: ${_startTextController.text} \n 目的地是: ${_endTextController.text}"
+          : message,
+    ).show();
+
+    // showCupertinoDialog(
+    //     context: context,
+    //     builder: (context) => CupertinoAlertDialog(
+    //           title: Text("搜索啦!"),
+    //           content: Text(
+    //               "起点是: ${_startTextController.text} \n 目的地是: ${_endTextController.text}"),
+    //           actions: [
+    //             Text("取消"),
+    //           ],
+    //         ));
 
     // print("${_startTextController.text}" + "${_endTextController.text}");
   }

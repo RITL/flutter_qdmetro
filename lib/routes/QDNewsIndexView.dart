@@ -294,6 +294,7 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
         currentPage += 1;
         documents.addAll(items);
       });
+      // ignore: unused_catch_clause
     } on QDHttpIOException catch (e) {}
   }
 }

@@ -37,7 +37,8 @@ dependencies:
   # latlong: ^0.6.1
   # stream_transform: ^1.2.0
   # build_resolvers: ^2.0.0
-  rflutter_alert: ^2.0.2
+  # rflutter_alert: ^2.0.2
+  flutter_ritl_alert: ^0.0.2
   permission_handler: ^5.0.1
   flutter_swiper: ^1.1.6
   cupertino_icons: ^1.0.2

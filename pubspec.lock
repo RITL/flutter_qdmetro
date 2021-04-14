@@ -279,6 +279,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.11"
+  flutter_ritl_alert:
+    dependency: "direct main"
+    description:
+      name: flutter_ritl_alert
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.2"
   flutter_swiper:
     dependency: "direct main"
     description:
@@ -541,13 +548,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.8"
-  rflutter_alert:
-    dependency: "direct main"
-    description:
-      name: rflutter_alert
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.2"
   rxdart:
     dependency: transitive
     description:
