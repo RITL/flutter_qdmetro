@@ -5,6 +5,9 @@
 ## 主页
 <img width="320" src="https://github.com/RITL/flutter_qdmetro/blob/master/previews/index.gif"></img>
 
+## 出行
+<img width="320" src="https://github.com/RITL/flutter_qdmetro/blob/master/previews/map.png"></img>
+
 ## 资讯
 <img width="320" src="https://github.com/RITL/flutter_qdmetro/blob/master/previews/news.gif"></img>
 
