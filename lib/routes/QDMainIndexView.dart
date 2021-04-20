@@ -1186,7 +1186,7 @@ class _QDMainIndexViewState extends State<QDMainIndexView>
     //进行网络请求
     Map response = await QDHttpUtil().post(
         // 'https://www.fastmock.site/mock/3dbf639cdfdcfc128e6edd40c9042fd5/qdmetro/static/index',
-        '/ngstatic/static/thirdlyIndex',
+        QDHttpURL.QDMainURL,
         {
           "moduleId": "1",
           "x": "${latitude.toString()}",

@@ -258,7 +258,7 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
     try {
       //进行请求
       var response = await httpUtil.post(
-        "ngstatic/document/getNewModules",
+        QDHttpURL.QDDocumentModuleURL,
         {"moduleId": "20"},
       );
       //转model
@@ -277,7 +277,7 @@ class QDNewsPageIndexBodyState extends State<QDNewsIndexPageBody> {
   _loadDocumentsList() async {
     try {
       List<dynamic> response = await httpUtil.post(
-        "ngstatic/document/getDocumentList",
+        QDHttpURL.QDDocumentListURL,
         {"type": "20", "size": "10", "page": currentPage},
       );
       //如果当前页码为1,数据置空即可

@@ -180,3 +180,21 @@ class QDHttpUtil {
     return Future.error(QDHttpIOException(-1, "not supported"));
   }
 }
+
+class QDHttpURL {
+  /// 主页的URL
+  // ignore: non_constant_identifier_names
+  static var QDMainURL = "/ngstatic/static/thirdlyIndex";
+
+  /// 出行界面底部的iconURL
+  // ignore: non_constant_identifier_names
+  static var QDMapIndexIconURL = "/ngstatic/travel/indexIcons";
+
+  /// 文章类顶部模块的URL
+  // ignore: non_constant_identifier_names
+  static var QDDocumentModuleURL = "/ngstatic/document/getNewModules";
+
+  /// 文章列表
+  // ignore: non_constant_identifier_names
+  static var QDDocumentListURL = "/ngstatic/document/getDocumentList";
+}

@@ -332,7 +332,7 @@ class _QDMapIndexViewState extends State<QDMapIndexView> {
 
   /// 获得icon
   _requestAllIcons() async {
-    Map response = await QDHttpUtil().post("/ngstatic/travel/indexIcons", {});
+    Map response = await QDHttpUtil().post(QDHttpURL.QDMapIndexIconURL, {});
     //进行模型转换
     List icons = response["appIcons"] ?? [];
     //进行赋值转换
